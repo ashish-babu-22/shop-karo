@@ -41,6 +41,8 @@ create table customer(
 customer_id integer not null,
 name varchar(30) default null,
 contact varchar(15) default null,
+mail varchar(30) default null
+password varchar(30) default null,
 location varchar(20) default null,
 cart_id integer,
 foreign key(customer_id) references credentials(customer_id),
