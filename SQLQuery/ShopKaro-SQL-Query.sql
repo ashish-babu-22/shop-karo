@@ -22,7 +22,7 @@ foreign key(product_id) references product_details(product_id),
 )auto_increment=1;
 
 
-create table customer(
+create table customer_details(
 customer_id integer not null,
 name varchar(30) default null,
 contact varchar(15) default null,
@@ -36,7 +36,7 @@ foreign key(cart_id) references cart_details(cart_id)
 
 create table order_details(
 order_id integer not null auto_increment,
-Payment_mode varchar(30) default null,
+payment_mode varchar(30) default null,
 dod varchar(10) default null,
 cart_id integer not null,
 primary key(order_id)
