@@ -1,4 +1,4 @@
 package Shopping_App.Shop_Karo.Entities;
 
-public class Customer {
+public class CustomerDetails {
 }

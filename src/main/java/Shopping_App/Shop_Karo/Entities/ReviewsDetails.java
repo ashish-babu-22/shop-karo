@@ -1,4 +1,4 @@
 package Shopping_App.Shop_Karo.Entities;
 
-public class Products {
+public class ReviewsDetails {
 }
