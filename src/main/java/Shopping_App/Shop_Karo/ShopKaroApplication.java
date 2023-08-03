@@ -1,4 +1,4 @@
-package shoppingapp.shopkaro;
+package Shopping_App.Shop_Karo;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
