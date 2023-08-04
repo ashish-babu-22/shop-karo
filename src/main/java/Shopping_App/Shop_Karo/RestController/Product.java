@@ -5,10 +5,7 @@ import Shopping_App.Shop_Karo.DataAccessObjects.ProductsDAO;
 import Shopping_App.Shop_Karo.Entities.ProductDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,7 +22,11 @@ public class Product {
 
     @GetMapping("/view_products")
     public List<ProductDetails> displayProducts(){
-        return productsDAO.findAll();
+        return null;
+    }
+
+    @GetMapping("/delete_product/{id}")
+    public void deleteProducts(@PathVariable int id){
     }
 
 }
