@@ -2,6 +2,7 @@ package ShoppingApp.ShopKaro.Service;
 
 import ShoppingApp.ShopKaro.DataAccessObjects.*;
 import ShoppingApp.ShopKaro.Entities.CartDetails;
+import ShoppingApp.ShopKaro.Entities.CustomerDetails;
 import ShoppingApp.ShopKaro.Entities.ProductDetails;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,11 @@ public class ServiceDAOImpl implements ServiceDAO{
     private ReviewDAO reviewDAO;
     private EntityManagerDAO entityManagerDAO;
 
+
+    @Override
+    public CustomerDetails addCustomer(CustomerDetails customerDetails) {
+        return customerDAO.save(customerDetails);
+    }
 
     @Override
     public void saveProduct(ProductDetails productDetails) {
