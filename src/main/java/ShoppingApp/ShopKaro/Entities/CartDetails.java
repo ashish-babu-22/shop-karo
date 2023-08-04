@@ -1,4 +1,4 @@
-package Shopping_App.Shop_Karo.Entities;
+package ShoppingApp.ShopKaro.Entities;
 
 
 import javax.persistence.*;
@@ -17,6 +17,8 @@ public class CartDetails {
     @Column(name = "total_price")
     String totalPrice;
 
+
+    @ManyToMany()
     private List<ProductDetails> productDetails;
 
     public CartDetails(){

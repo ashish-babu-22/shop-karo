@@ -1,4 +1,4 @@
-package Shopping_App.Shop_Karo;
+package ShoppingApp.ShopKaro;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

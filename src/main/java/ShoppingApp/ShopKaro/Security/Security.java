@@ -1,4 +1,4 @@
-package Shopping_App.Shop_Karo.Security;
+package ShoppingApp.ShopKaro.Security;
 
 
 import org.springframework.context.annotation.Bean;

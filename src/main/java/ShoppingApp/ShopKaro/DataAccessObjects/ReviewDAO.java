@@ -1,6 +1,6 @@
-package Shopping_App.Shop_Karo.DataAccessObjects;
+package ShoppingApp.ShopKaro.DataAccessObjects;
 
-import Shopping_App.Shop_Karo.Entities.ReviewsDetails;
+import ShoppingApp.ShopKaro.Entities.ReviewsDetails;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ReviewDAO extends JpaRepository<ReviewsDetails,Integer> {

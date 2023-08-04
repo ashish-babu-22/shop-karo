@@ -1,6 +1,6 @@
-package Shopping_App.Shop_Karo.DataAccessObjects;
+package ShoppingApp.ShopKaro.DataAccessObjects;
 
-import Shopping_App.Shop_Karo.Entities.ProductDetails;
+import ShoppingApp.ShopKaro.Entities.ProductDetails;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -16,7 +16,13 @@ public class EntityManagerDAOImpl implements EntityManagerDAO{
 
     @Override
     public List<ProductDetails> itemsInCartById(int cartId) {
-        TypedQuery<ProductDetails> cartItems = entityManager.createQuery("from product_details where cart_id = :id")
-        return ;
+        TypedQuery<ProductDetails> cartItems = entityManager.createQuery("select p from product_details where cart_details.cart_id = :id",ProductDetails.class);
+        cartItems.setParameter("id",cartId);
+
+        return cartItems.getResultList();
     }
+
+
+
+
 }

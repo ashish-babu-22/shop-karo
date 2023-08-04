@@ -1,8 +1,8 @@
-package Shopping_App.Shop_Karo.Service;
+package ShoppingApp.ShopKaro.Service;
 
-import Shopping_App.Shop_Karo.DataAccessObjects.*;
-import Shopping_App.Shop_Karo.Entities.CartDetails;
-import Shopping_App.Shop_Karo.Entities.ProductDetails;
+import ShoppingApp.ShopKaro.DataAccessObjects.*;
+import ShoppingApp.ShopKaro.Entities.CartDetails;
+import ShoppingApp.ShopKaro.Entities.ProductDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +16,7 @@ public class ServiceDAOImpl implements ServiceDAO{
     private OrderDetailsDAO orderDetailsDAO;
     private CartDAO cartDAO;
     private ReviewDAO reviewDAO;
+    private EntityManagerDAO entityManagerDAO;
 
 
     @Override
@@ -45,13 +46,18 @@ public class ServiceDAOImpl implements ServiceDAO{
     }
 
     @Override
-    public List<CartDetails> showCartItems() {
-        return cartDAO.findAll();
+    public List<ProductDetails> showCartItems(int id) {
+        return entityManagerDAO.itemsInCartById(id);
     }
 
     @Override
     public void deleteCartItemByProductId(int id) {
 
+    }
+
+    @Override
+    public List<ProductDetails> itemsInCartById(int cartId) {
+       return entityManagerDAO.itemsInCartById(cartId);
     }
 
 }

@@ -1,6 +1,6 @@
-package Shopping_App.Shop_Karo.DataAccessObjects;
+package ShoppingApp.ShopKaro.DataAccessObjects;
 
-import Shopping_App.Shop_Karo.Entities.CustomerDetails;
+import ShoppingApp.ShopKaro.Entities.CustomerDetails;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CustomerDAO extends JpaRepository<CustomerDetails,Integer> {

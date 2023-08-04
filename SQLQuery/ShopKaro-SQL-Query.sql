@@ -14,13 +14,20 @@ primary key(product_id),
 
 create table cart_details
 (
-cart_id integer not null auto_increment,
+cart_id integer not null,
 total_price integer not null,
 product_id integer default null,
 primary key(cart_id),
 foreign key(product_id) references product_details(product_id),
+
+foreign key(cart_id) references customer_details(customer_id)
 )auto_increment=1;
 
+create table cart_product(
+cart_id integer not null,
+product_id integer not null,
+primary key(cart_id,product_id)
+)
 
 create table customer_details(
 customer_id integer not null,
@@ -30,6 +37,7 @@ mail varchar(30) default null
 password varchar(30) default null,
 location varchar(20) default null,
 cart_id integer,
+primay key(customer_id,cart_id)
 foreign key(cart_id) references cart_details(cart_id)
 );
 

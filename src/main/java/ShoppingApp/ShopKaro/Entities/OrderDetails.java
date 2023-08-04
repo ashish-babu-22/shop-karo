@@ -1,4 +1,4 @@
-package Shopping_App.Shop_Karo.Entities;
+package ShoppingApp.ShopKaro.Entities;
 
 import javax.annotation.processing.Generated;
 import javax.persistence.*;
