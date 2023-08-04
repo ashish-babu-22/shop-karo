@@ -2,6 +2,7 @@ package Shopping_App.Shop_Karo.Entities;
 
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "cart_details")
@@ -15,6 +16,8 @@ public class CartDetails {
 
     @Column(name = "total_price")
     String totalPrice;
+
+    private List<ProductDetails> productDetails;
 
     public CartDetails(){
 
@@ -38,5 +41,13 @@ public class CartDetails {
 
     public void setTotalPrice(String totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    @Override
+    public String toString() {
+        return "CartDetails{" +
+                "id=" + id +
+                ", totalPrice='" + totalPrice + '\'' +
+                '}';
     }
 }
