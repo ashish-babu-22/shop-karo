@@ -2,6 +2,7 @@ package ShoppingApp.ShopKaro.Service;
 
 import ShoppingApp.ShopKaro.DataAccessObjects.*;
 import ShoppingApp.ShopKaro.Entities.CartDetails;
+import ShoppingApp.ShopKaro.Entities.CartItemDetails;
 import ShoppingApp.ShopKaro.Entities.CustomerDetails;
 import ShoppingApp.ShopKaro.Entities.ProductDetails;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ public class ServiceDAOImpl implements ServiceDAO{
     private ProductsDAO productsDAO;
     private CustomerDAO customerDAO;
     private OrderDetailsDAO orderDetailsDAO;
+    private CartItemsDAO cartItemsDAO;
     private CartDAO cartDAO;
     private ReviewDAO reviewDAO;
     private EntityManagerDAO entityManagerDAO;
@@ -22,7 +24,15 @@ public class ServiceDAOImpl implements ServiceDAO{
 
     @Override
     public CustomerDetails addCustomer(CustomerDetails customerDetails) {
+
         return customerDAO.save(customerDetails);
+    }
+
+    @Override
+    public int findUser(CustomerDetails customerDetails) {
+        int cusId = entityManagerDAO.findId(customerDetails);
+        return cusId;
+
     }
 
     @Override
@@ -64,6 +74,11 @@ public class ServiceDAOImpl implements ServiceDAO{
     @Override
     public List<ProductDetails> itemsInCartById(int cartId) {
        return entityManagerDAO.itemsInCartById(cartId);
+    }
+
+    @Override
+    public CartItemDetails addToCart(int cart_id, int prod_id) {
+        return entityManagerDAO.AddCartItem(prod_id, cart_id);
     }
 
 }

@@ -23,6 +23,13 @@ foreign key(product_id) references product_details(product_id),
 foreign key(cart_id) references customer_details(customer_id)
 )auto_increment=1;
 
+create table cart_item_details(
+product_id integer not null auto_increment;
+name varchar(20) default null,
+price varchar(20) default null,
+primary key(product_id)
+)auto_increment=1;
+
 create table cart_product(
 cart_id integer not null,
 product_id integer not null,
