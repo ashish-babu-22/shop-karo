@@ -8,9 +8,12 @@ import java.util.List;
 
 public interface EntityManagerDAO {
 
-    public List<ProductDetails> itemsInCartById(int cartId);
+//    public List<CartItemDetails> itemsInCartById(int cartId);
     public CartItemDetails AddCartItem(int prod_id, int cart_id);
 
     public int findId(CustomerDetails customerDetails);
+
+    public int totalPrice(CartItemDetails cartItemDetails);
+    public void deleteCartItemByProductId(int cart_id,int prod_id);
 
 }

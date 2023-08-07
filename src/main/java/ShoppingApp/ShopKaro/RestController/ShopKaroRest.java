@@ -1,6 +1,7 @@
 package ShoppingApp.ShopKaro.RestController;
 
 
+import ShoppingApp.ShopKaro.Entities.CartDetails;
 import ShoppingApp.ShopKaro.Entities.CartItemDetails;
 import ShoppingApp.ShopKaro.Entities.CustomerDetails;
 import ShoppingApp.ShopKaro.Entities.ProductDetails;
@@ -14,12 +15,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/shopkaro/")
 
-public class Product {
+public class ShopKaroRest {
 
     private ServiceDAO serviceDAO;
 
     @Autowired
-    public Product(ServiceDAO serviceDAO){
+    public ShopKaroRest(ServiceDAO serviceDAO){
         this.serviceDAO=serviceDAO;
     }
 
@@ -40,7 +41,7 @@ public class Product {
     public RedirectView logCustomer(@RequestBody CustomerDetails customerDetails){
 
         int id = serviceDAO.findUser(customerDetails);
-        return new RedirectView("{id}/view_products");
+        return new RedirectView(id+"/view_products");
 
     }
 
@@ -58,8 +59,16 @@ public class Product {
     }
 
     @GetMapping("/{id}/show_cart_items")
-    public List<ProductDetails> showCartProducts(@PathVariable int id){
+    public List<CartItemDetails> showCartProducts(@PathVariable int id){
         return serviceDAO.showCartItems(id);
+    }
+
+
+
+
+    @GetMapping("/{cart_id}/place_order")
+    public List<CartDetails> showDetails(@PathVariable int cart_id){
+
     }
 
 }

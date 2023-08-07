@@ -24,11 +24,11 @@ public interface ServiceDAO {
 
     // Cart Entity methods
 
-    public List<ProductDetails> showCartItems(int id);
+    public List<CartItemDetails> showCartItems(int id);
 
-    public void deleteCartItemByProductId(int id);
-
-    public List<ProductDetails> itemsInCartById(int cartId);
+    public void deleteCartItemByProductId(int cart_id,int prod_id);
 
     public CartItemDetails addToCart(int cart_id, int prod_id);
+
+    public CartDetails checkOut(int cart_id);
 }

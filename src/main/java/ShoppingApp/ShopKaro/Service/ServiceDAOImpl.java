@@ -30,8 +30,7 @@ public class ServiceDAOImpl implements ServiceDAO{
 
     @Override
     public int findUser(CustomerDetails customerDetails) {
-        int cusId = entityManagerDAO.findId(customerDetails);
-        return cusId;
+        return entityManagerDAO.findId(customerDetails);
 
     }
 
@@ -62,23 +61,25 @@ public class ServiceDAOImpl implements ServiceDAO{
     }
 
     @Override
-    public List<ProductDetails> showCartItems(int id) {
-        return entityManagerDAO.itemsInCartById(id);
+    public List<CartItemDetails> showCartItems(int id) {
+        CartDetails temp = cartDAO.findById(id).get();
+        return temp.getCartItemDetails();
     }
 
     @Override
-    public void deleteCartItemByProductId(int id) {
-
+    public void deleteCartItemByProductId(int cart_id,int prod_id) {
+       entityManagerDAO.deleteCartItemByProductId(cart_id,prod_id);
     }
 
-    @Override
-    public List<ProductDetails> itemsInCartById(int cartId) {
-       return entityManagerDAO.itemsInCartById(cartId);
-    }
 
     @Override
     public CartItemDetails addToCart(int cart_id, int prod_id) {
         return entityManagerDAO.AddCartItem(prod_id, cart_id);
+    }
+
+    @Override
+    public CartDetails checkOut(int cart_id) {
+        return cartDAO.findById(cart_id).get();
     }
 
 }

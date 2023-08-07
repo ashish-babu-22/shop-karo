@@ -17,6 +17,18 @@ public class CartItemDetails {
     @Column(name = "price")
     String price;
 
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "cart_id")
+    private CartDetails cartDetails;
+
+    public CartDetails getCartDetails() {
+        return cartDetails;
+    }
+
+    public void setCartDetails(CartDetails cartDetails) {
+        this.cartDetails = cartDetails;
+    }
+
     public CartItemDetails(){}
 
     public CartItemDetails(String name, String price) {
