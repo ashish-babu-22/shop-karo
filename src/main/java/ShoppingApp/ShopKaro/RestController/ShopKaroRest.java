@@ -68,7 +68,7 @@ public class ShopKaroRest {
 
     @GetMapping("/{cart_id}/place_order")
     public List<CartDetails> showDetails(@PathVariable int cart_id){
-
+       return serviceDAO.checkOut(cart_id);
     }
 
 }

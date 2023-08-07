@@ -30,5 +30,5 @@ public interface ServiceDAO {
 
     public CartItemDetails addToCart(int cart_id, int prod_id);
 
-    public CartDetails checkOut(int cart_id);
+    public List<CartDetails> checkOut(int cart_id);
 }

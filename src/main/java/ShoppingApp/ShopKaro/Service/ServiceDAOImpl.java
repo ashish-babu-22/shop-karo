@@ -78,8 +78,8 @@ public class ServiceDAOImpl implements ServiceDAO{
     }
 
     @Override
-    public CartDetails checkOut(int cart_id) {
-        return cartDAO.findById(cart_id).get();
+    public List<CartDetails> checkOut(int cart_id) {
+        return cartDAO.findAll();
     }
 
 }
