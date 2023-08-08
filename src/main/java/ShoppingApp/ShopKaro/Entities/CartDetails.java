@@ -17,10 +17,10 @@ public class CartDetails {
     @Column(name = "total_price")
     String totalPrice;
 
-    @OneToMany(mappedBy = "cartDetails")
+    @OneToMany(mappedBy = "cartDetails",cascade = CascadeType.ALL)
     List<CartItemDetails> cartItemDetails;
 
-    @OneToOne(mappedBy = "cartDetails")
+    @OneToOne(mappedBy = "cartDetails",cascade = CascadeType.ALL)
     private OrderDetails orderDetails;
 
     public CartDetails(){

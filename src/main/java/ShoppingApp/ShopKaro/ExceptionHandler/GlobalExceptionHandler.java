@@ -35,7 +35,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ProductErrorResponse> exceptionHandler(Exception exception){
         ProductErrorResponse errorResponse = new ProductErrorResponse(
                 HttpStatus.BAD_REQUEST.value(),
-                exception.getMessage(),
+                "Enter a valid parameter",
                 String.valueOf(LocalDateTime.now())
         );
         return new ResponseEntity<>(errorResponse,HttpStatus.BAD_REQUEST);

@@ -25,6 +25,11 @@ public class CustomerDetails {
     @Column(name = "password")
     String password;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    private CartDetails cartDetails;
+
+
+
     public  CustomerDetails(){}
 
     public CustomerDetails(String name, String location, String contact) {

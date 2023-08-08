@@ -17,7 +17,7 @@ public class CartItemDetails {
     @Column(name = "price")
     String price;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
     @JoinColumn(name = "cart_id")
     private CartDetails cartDetails;
 

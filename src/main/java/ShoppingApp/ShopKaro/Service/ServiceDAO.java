@@ -6,6 +6,9 @@ import java.util.List;
 
 public interface ServiceDAO {
 
+    public boolean isValidProdId(int id);
+    public boolean isValidCartId(int id);
+
     public CustomerDetails addCustomer(CustomerDetails customerDetails);
 
     public int findUser(CustomerDetails customerDetails);
@@ -30,4 +33,17 @@ public interface ServiceDAO {
     List<ReviewsDetails> displayReviews(int prod_id);
 
     ReviewsDetails addReview(int cartId, int prodId, ReviewsDetails reviewsDetails);
+
+    List<CustomerDetails> listCustomers();
+
+    String deleteCustomer(int id);
+
+    ProductDetails addProduct(ProductDetails productDetails);
+
+    ProductDetails updateProduct(ProductDetails productDetails);
+
+    void updateDetails(CustomerDetails customerDetails);
+
+    ProductDetails vewProductById(int prodId);
+
 }

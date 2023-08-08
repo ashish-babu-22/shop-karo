@@ -2,6 +2,7 @@ package ShoppingApp.ShopKaro.Service;
 
 import ShoppingApp.ShopKaro.DataAccessObjects.*;
 import ShoppingApp.ShopKaro.Entities.*;
+import ShoppingApp.ShopKaro.ExceptionHandler.UserNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalTime;
@@ -21,8 +22,21 @@ public class ServiceDAOImpl implements ServiceDAO{
 
 
     @Override
-    public CustomerDetails addCustomer(CustomerDetails customerDetails) {
+    public boolean isValidProdId(int prod_id) {
 
+        Optional<ProductDetails> byId = productsDAO.findById(prod_id);
+        return byId.isPresent();
+    }
+
+    @Override
+    public boolean isValidCartId(int cart_id) {
+        Optional<CartDetails> byId =cartDAO.findById(cart_id);
+        return byId.isPresent();
+    }
+
+    @Override
+    public CustomerDetails addCustomer(CustomerDetails customerDetails) {
+        customerDetails.setId(0);
         return customerDAO.save(customerDetails);
     }
 
@@ -108,5 +122,40 @@ public class ServiceDAOImpl implements ServiceDAO{
         productsDAO.save(prod);
         return review;
     }
+
+    @Override
+    public List<CustomerDetails> listCustomers() {
+        return customerDAO.findAll();
+    }
+
+    @Override
+    public String deleteCustomer(int id) {
+        if(isValidCartId(id))throw new UserNotFoundException("User ID Unknown");
+        customerDAO.deleteById(id);
+        return "User "+ id + " deleted Successfully";
+    }
+
+    @Override
+    public ProductDetails addProduct(ProductDetails productDetails) {
+        productDetails.setId(0);
+        return productsDAO.save(productDetails);
+    }
+
+    @Override
+    public ProductDetails updateProduct(ProductDetails productDetails) {
+        return productsDAO.save(productDetails);
+    }
+
+    @Override
+    public void updateDetails(CustomerDetails customerDetails) {
+        customerDAO.save(customerDetails);
+    }
+
+    @Override
+    public ProductDetails vewProductById(int prodId) {
+        return productsDAO.findById(prodId).get();
+    }
+
+
 
 }
