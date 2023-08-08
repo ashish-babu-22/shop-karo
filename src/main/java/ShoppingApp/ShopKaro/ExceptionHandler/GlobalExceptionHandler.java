@@ -34,7 +34,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler
     public ResponseEntity<ProductErrorResponse> exceptionHandler(Exception exception){
         ProductErrorResponse errorResponse = new ProductErrorResponse(
-                HttpStatus.BAD_REQUEST,
+                HttpStatus.BAD_REQUEST.value(),
                 exception.getMessage(),
                 String.valueOf(LocalDateTime.now())
         );

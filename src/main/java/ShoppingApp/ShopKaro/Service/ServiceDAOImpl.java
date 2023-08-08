@@ -93,8 +93,20 @@ public class ServiceDAOImpl implements ServiceDAO{
     }
 
     @Override
-    public List<ReviewsDetails> displayReviews(int cart_id, int prod_id) {
+    public List<ReviewsDetails> displayReviews(int prod_id) {
         ProductDetails product = selectProductById(prod_id);
+        return product.getReviewsDetails();
+    }
+
+    @Override
+    public ReviewsDetails addReview(int cartId, int prodId, ReviewsDetails review) {
+        CustomerDetails cus = customerDAO.findById(cartId).get();
+        String name = cus.getName();
+        review.setName(name);
+        ProductDetails prod = productsDAO.findById(prodId).get();
+        prod.add(review);
+        productsDAO.save(prod);
+        return review;
     }
 
 }

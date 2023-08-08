@@ -16,11 +16,11 @@ create table cart_details
 (
 cart_id integer not null,
 total_price integer not null,
-product_id integer default null,
 primary key(cart_id),
 foreign key(product_id) references product_details(product_id),
 
 foreign key(cart_id) references customer_details(customer_id)
+
 )auto_increment=1;
 
 create table cart_item_details(
@@ -51,8 +51,12 @@ foreign key(cart_id) references cart_details(cart_id)
 
 create table order_details(
 order_id integer not null auto_increment,
+name varchar(40) default null,
+location varchar(40) default null,
 payment_mode varchar(30) default null,
+doo varchar(10) default null,
 dod varchar(10) default null,
+amount_payable varchar(10) default null,
 cart_id integer not null,
 primary key(order_id)
 foreign key (cart_id) references cart_details(cart_id)
@@ -61,7 +65,9 @@ foreign key (cart_id) references cart_details(cart_id)
 
 create table review_details(
 review_id integer not null auto_increment,
+name varchar(40) default null,
 comments varchar(100) default null,
+product_id integer,
 primary key(review_id),
 foreign key(product_id) references product_details(product_id)
 )auto_increment=1;

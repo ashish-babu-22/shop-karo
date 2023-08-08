@@ -48,8 +48,13 @@ public class ShopKaroRest {
     }
 
     @GetMapping("{cart_id}/view_products/{prod_id}/see_reviews")
-    public List<ReviewsDetails> seeReviews(@PathVariable("cart_id") int cart_id,@PathVariable("prod_id")int prod_id){
-        return serviceDAO.displayReviews(cart_id,prod_id);
+    public List<ReviewsDetails> seeReviews(@PathVariable("prod_id")int prod_id){
+        return serviceDAO.displayReviews(prod_id);
+    }
+
+    @PostMapping("{cart_id}/view_products/{prod_id}/add_review")
+    public ReviewsDetails addReview(@PathVariable("cart_id")int cart_id,@PathVariable("prod_id")int prod_id, @RequestBody ReviewsDetails reviewsDetails){
+        return serviceDAO.addReview(cart_id,prod_id,reviewsDetails);
     }
 
     @GetMapping("{cart_id}/add_product/(prod_id}")

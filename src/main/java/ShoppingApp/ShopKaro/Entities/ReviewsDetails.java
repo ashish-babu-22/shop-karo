@@ -12,13 +12,36 @@ public class ReviewsDetails {
     @Column(name = "review_id")
     int id;
 
+    @Column(name = "name")
+    String name;
+
     @Column(name = "comments")
     String comments;
 
     public ReviewsDetails(){}
 
-    public ReviewsDetails(String comments) {
+    public ReviewsDetails(String name, String comments) {
+        this.name = name;
         this.comments = comments;
+    }
+ public ReviewsDetails( String comments) {
+        this.comments = comments;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getComments() {
@@ -33,6 +56,7 @@ public class ReviewsDetails {
     public String toString() {
         return "ReviewsDetails{" +
                 "id=" + id +
+                ", name='" + name + '\'' +
                 ", comments='" + comments + '\'' +
                 '}';
     }

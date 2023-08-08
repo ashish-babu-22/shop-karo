@@ -1,7 +1,8 @@
 package ShoppingApp.ShopKaro.Entities;
 
 import javax.persistence.*;
-
+import java.util.ArrayList;
+import java.util.List;
 @Entity
 @Table(name = "product_details")
 public class ProductDetails {
@@ -19,6 +20,11 @@ public class ProductDetails {
 
     @Column(name = "price")
     String price;
+
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id")
+    List<ReviewsDetails> reviewsDetails;
+
 
     public ProductDetails(String name, String quantity, String price) {
         this.name = name;
@@ -58,6 +64,14 @@ public class ProductDetails {
         this.price = price;
     }
 
+    public List<ReviewsDetails> getReviewsDetails() {
+        return reviewsDetails;
+    }
+
+    public void setReviewsDetails(List<ReviewsDetails> reviewsDetails) {
+        this.reviewsDetails = reviewsDetails;
+    }
+
     @Override
     public String toString() {
         return "ProductDetails{" +
@@ -66,5 +80,12 @@ public class ProductDetails {
                 ", quantity='" + quantity + '\'' +
                 ", price='" + price + '\'' +
                 '}';
+    }
+
+    public void add(ReviewsDetails review){
+        if(reviewsDetails==null){
+            reviewsDetails = new ArrayList<>();
+        }
+        reviewsDetails.add(review);
     }
 }
