@@ -92,4 +92,9 @@ public class ServiceDAOImpl implements ServiceDAO{
         return order;
     }
 
+    @Override
+    public List<ReviewsDetails> displayReviews(int cart_id, int prod_id) {
+        ProductDetails product = selectProductById(prod_id);
+    }
+
 }

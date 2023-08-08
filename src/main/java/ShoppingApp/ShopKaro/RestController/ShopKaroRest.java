@@ -42,11 +42,15 @@ public class ShopKaroRest {
     }
 
 
-    @GetMapping("{id}/view_products")
+    @GetMapping("{cart_id}/view_products")
     public List<ProductDetails> displayProducts(){
         return serviceDAO.showProducts();
     }
 
+    @GetMapping("{cart_id}/view_products/{prod_id}/see_reviews")
+    public List<ReviewsDetails> seeReviews(@PathVariable("cart_id") int cart_id,@PathVariable("prod_id")int prod_id){
+        return serviceDAO.displayReviews(cart_id,prod_id);
+    }
 
     @GetMapping("{cart_id}/add_product/(prod_id}")
     public CartItemDetails addToCart(@PathVariable("prod_id") int prod_id, @PathVariable("cart_id") int cart_id){
@@ -65,12 +69,11 @@ public class ShopKaroRest {
         return serviceDAO.showCartItems(id);
     }
 
-
-
-
     @GetMapping("/{cart_id}/place_order")
     public OrderDetails showDetails(@PathVariable int cart_id){
        return serviceDAO.checkOut(cart_id);
     }
+
+
 
 }

@@ -26,4 +26,6 @@ public interface ServiceDAO {
     public CartItemDetails addToCart(int cart_id, int prod_id);
 
     public OrderDetails checkOut(int cart_id);
+
+    List<ReviewsDetails> displayReviews(int cart_id, int prod_id);
 }
