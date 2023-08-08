@@ -1,9 +1,6 @@
 package ShoppingApp.ShopKaro.DataAccessObjects;
 
-import ShoppingApp.ShopKaro.Entities.CartDetails;
-import ShoppingApp.ShopKaro.Entities.CartItemDetails;
-import ShoppingApp.ShopKaro.Entities.CustomerDetails;
-import ShoppingApp.ShopKaro.Entities.ProductDetails;
+import ShoppingApp.ShopKaro.Entities.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -31,7 +28,12 @@ public class EntityManagerDAOImpl implements EntityManagerDAO{
     public CartItemDetails AddCartItem(int prod_id,int cart_id) {
         ProductDetails tempProd = entityManager.find(ProductDetails.class,prod_id);
         CartItemDetails cartItem = new CartItemDetails(tempProd.getName(),tempProd.getPrice());
-        CartDetails temp = entityManager.find(CartDetails.class,cart_id);
+         CartDetails temp;
+        try{
+        temp = entityManager.find(CartDetails.class,cart_id);}
+        catch(Exception e){
+            temp = new CartDetails(cart_id);
+        }
         temp.add(cartItem);
         cartDAO.save(temp);
         return cartItem;
@@ -55,14 +57,13 @@ public class EntityManagerDAOImpl implements EntityManagerDAO{
     }
 
     @Override
-    public int totalPrice(CartItemDetails cartItemDetails) {
-        Query query = entityManager.createQuery("select sum(c.price) from cart_item_details c");
-        try {
-            return (Integer)query.getSingleResult();
+    public int totalPrice(List<CartItemDetails> cartItemDetails) {
+        int tot = 0;
+        for(CartItemDetails item : cartItemDetails){
+            int price = Integer.parseInt(item.getPrice().replaceAll("[^0-9]",""));
+            tot+=price;
         }
-        catch (Exception e){
-            return -1;
-        }
+        return tot;
     }
 
     @Override
@@ -73,6 +74,13 @@ public class EntityManagerDAOImpl implements EntityManagerDAO{
         query.setParameter("cartId",cart_id);
         query.setParameter("proId",prod_id);
         CartItemDetails temp = (CartItemDetails) query.getSingleResult();
+
+    }
+
+    @Override
+    public OrderDetails checkOut(int cart_id) {
+       return null;
+
 
     }
 

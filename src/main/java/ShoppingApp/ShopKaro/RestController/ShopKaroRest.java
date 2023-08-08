@@ -1,10 +1,6 @@
 package ShoppingApp.ShopKaro.RestController;
 
-
-import ShoppingApp.ShopKaro.Entities.CartDetails;
-import ShoppingApp.ShopKaro.Entities.CartItemDetails;
-import ShoppingApp.ShopKaro.Entities.CustomerDetails;
-import ShoppingApp.ShopKaro.Entities.ProductDetails;
+import ShoppingApp.ShopKaro.Entities.*;
 import ShoppingApp.ShopKaro.Service.ServiceDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -52,10 +48,16 @@ public class ShopKaroRest {
     }
 
 
-    @GetMapping("{cart_id}/view_products/(prod_id}")
-    public CartItemDetails addProduct(@PathVariable("prod_id") int prod_id, @PathVariable("cart_id") int cart_id){
+    @GetMapping("{cart_id}/add_product/(prod_id}")
+    public CartItemDetails addToCart(@PathVariable("prod_id") int prod_id, @PathVariable("cart_id") int cart_id){
 
         return serviceDAO.addToCart(cart_id,prod_id);
+    }
+
+    @DeleteMapping("{cart_id}/delete_product/{prod_id)")
+    public String deleteCartProduct(@PathVariable("cart_id") int cart_id,@PathVariable("prod_id") int prod_id){
+        serviceDAO.deleteCartItemByProductId(cart_id,prod_id);
+        return "Removed Id - "+prod_id;
     }
 
     @GetMapping("/{id}/show_cart_items")
@@ -67,7 +69,7 @@ public class ShopKaroRest {
 
 
     @GetMapping("/{cart_id}/place_order")
-    public List<CartDetails> showDetails(@PathVariable int cart_id){
+    public OrderDetails showDetails(@PathVariable int cart_id){
        return serviceDAO.checkOut(cart_id);
     }
 

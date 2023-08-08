@@ -1,8 +1,6 @@
 package ShoppingApp.ShopKaro.DataAccessObjects;
 
-import ShoppingApp.ShopKaro.Entities.CartItemDetails;
-import ShoppingApp.ShopKaro.Entities.CustomerDetails;
-import ShoppingApp.ShopKaro.Entities.ProductDetails;
+import ShoppingApp.ShopKaro.Entities.*;
 
 import java.util.List;
 
@@ -13,7 +11,9 @@ public interface EntityManagerDAO {
 
     public int findId(CustomerDetails customerDetails);
 
-    public int totalPrice(CartItemDetails cartItemDetails);
+    public int totalPrice(List<CartItemDetails> cartItemDetails);
     public void deleteCartItemByProductId(int cart_id,int prod_id);
+    public OrderDetails checkOut(int cart_id);
+
 
 }

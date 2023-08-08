@@ -1,12 +1,10 @@
 package ShoppingApp.ShopKaro.Service;
 
 import ShoppingApp.ShopKaro.DataAccessObjects.*;
-import ShoppingApp.ShopKaro.Entities.CartDetails;
-import ShoppingApp.ShopKaro.Entities.CartItemDetails;
-import ShoppingApp.ShopKaro.Entities.CustomerDetails;
-import ShoppingApp.ShopKaro.Entities.ProductDetails;
+import ShoppingApp.ShopKaro.Entities.*;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -78,8 +76,20 @@ public class ServiceDAOImpl implements ServiceDAO{
     }
 
     @Override
-    public List<CartDetails> checkOut(int cart_id) {
-        return cartDAO.findAll();
+    public OrderDetails checkOut(int cart_id) {
+        CartDetails cart = cartDAO.findById(cart_id).get();
+        List<CartItemDetails> cartItemDetails = cart.getCartItemDetails();
+        CustomerDetails cus = customerDAO.findById(cart_id).get();
+        String name = cus.getName();
+        String location = cus.getLocation();
+        String dateOfOrder = String.valueOf(LocalTime.now());
+        String dateOfDelivery = String.valueOf(LocalTime.now().plusHours(240));
+        String amountPayable = String.valueOf(entityManagerDAO.totalPrice(cartItemDetails));
+        cart.setTotalPrice(amountPayable);
+        cartDAO.save(cart);
+        OrderDetails order = new OrderDetails(name,location,dateOfOrder,dateOfDelivery,amountPayable);
+        orderDetailsDAO.save(order);
+        return order;
     }
 
 }

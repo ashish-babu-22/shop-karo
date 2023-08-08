@@ -1,9 +1,6 @@
 package ShoppingApp.ShopKaro.Service;
 
-import ShoppingApp.ShopKaro.Entities.CartDetails;
-import ShoppingApp.ShopKaro.Entities.CartItemDetails;
-import ShoppingApp.ShopKaro.Entities.CustomerDetails;
-import ShoppingApp.ShopKaro.Entities.ProductDetails;
+import ShoppingApp.ShopKaro.Entities.*;
 
 import java.util.List;
 
@@ -20,15 +17,13 @@ public interface ServiceDAO {
 
     public void deleteProductById(int id);
 
-    public ProductDetails selectProductById(int id);
-
     // Cart Entity methods
 
     public List<CartItemDetails> showCartItems(int id);
-
+    public ProductDetails selectProductById(int id);
     public void deleteCartItemByProductId(int cart_id,int prod_id);
 
     public CartItemDetails addToCart(int cart_id, int prod_id);
 
-    public List<CartDetails> checkOut(int cart_id);
+    public OrderDetails checkOut(int cart_id);
 }

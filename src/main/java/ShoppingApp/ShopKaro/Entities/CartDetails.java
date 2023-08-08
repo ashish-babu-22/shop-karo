@@ -10,8 +10,7 @@ import java.util.List;
 public class CartDetails {
 
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     @Column(name = "cart_id")
     int id;
 
@@ -21,11 +20,21 @@ public class CartDetails {
     @OneToMany(mappedBy = "cartDetails")
     List<CartItemDetails> cartItemDetails;
 
-    @ManyToMany()
-    private List<ProductDetails> productDetails;
+    @OneToOne(mappedBy = "cartDetails")
+    private OrderDetails orderDetails;
 
     public CartDetails(){
 
+    }
+
+    public CartDetails(int id) {
+        this.id = id;
+    }
+
+    public CartDetails(int id, List<CartItemDetails> cartItemDetails, OrderDetails orderDetails) {
+        this.id = id;
+        this.cartItemDetails = cartItemDetails;
+        this.orderDetails = orderDetails;
     }
 
     public CartDetails(String totalPrice) {
@@ -57,12 +66,12 @@ public class CartDetails {
         this.cartItemDetails = cartItemDetails;
     }
 
-    public List<ProductDetails> getProductDetails() {
-        return productDetails;
+    public OrderDetails getOrderDetails() {
+        return orderDetails;
     }
 
-    public void setProductDetails(List<ProductDetails> productDetails) {
-        this.productDetails = productDetails;
+    public void setOrderDetails(OrderDetails orderDetails) {
+        this.orderDetails = orderDetails;
     }
 
     @Override
@@ -70,6 +79,8 @@ public class CartDetails {
         return "CartDetails{" +
                 "id=" + id +
                 ", totalPrice='" + totalPrice + '\'' +
+                ", cartItemDetails=" + cartItemDetails +
+                ", orderDetails=" + orderDetails +
                 '}';
     }
 
