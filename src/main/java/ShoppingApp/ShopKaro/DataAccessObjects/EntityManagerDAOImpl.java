@@ -1,6 +1,8 @@
 package ShoppingApp.ShopKaro.DataAccessObjects;
 
 import ShoppingApp.ShopKaro.Entities.*;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -8,6 +10,8 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 
+
+@Repository
 public class EntityManagerDAOImpl implements EntityManagerDAO{
 
 
@@ -24,6 +28,7 @@ public class EntityManagerDAOImpl implements EntityManagerDAO{
 //        return temp.getCartItemDetails();
 //    }
 
+    @Transactional
     @Override
     public CartItemDetails AddCartItem(int prod_id,int cart_id) {
         ProductDetails tempProd = entityManager.find(ProductDetails.class,prod_id);
@@ -66,6 +71,7 @@ public class EntityManagerDAOImpl implements EntityManagerDAO{
         return tot;
     }
 
+    @Transactional
     @Override
     public void deleteCartItemByProductId(int cart_id, int prod_id) {
         CartDetails cart = entityManager.find(CartDetails.class,cart_id);
@@ -74,13 +80,6 @@ public class EntityManagerDAOImpl implements EntityManagerDAO{
         query.setParameter("cartId",cart_id);
         query.setParameter("proId",prod_id);
         CartItemDetails temp = (CartItemDetails) query.getSingleResult();
-
-    }
-
-    @Override
-    public OrderDetails checkOut(int cart_id) {
-       return null;
-
 
     }
 

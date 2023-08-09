@@ -2,9 +2,12 @@ package ShoppingApp.ShopKaro.Service;
 
 import ShoppingApp.ShopKaro.DataAccessObjects.*;
 import ShoppingApp.ShopKaro.Entities.*;
+import ShoppingApp.ShopKaro.ExceptionHandler.ProductNotFoundException;
 import ShoppingApp.ShopKaro.ExceptionHandler.UserNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
@@ -12,14 +15,43 @@ import java.util.Optional;
 @Service
 public class ServiceDAOImpl implements ServiceDAO{
 
-    private ProductsDAO productsDAO;
-    private CustomerDAO customerDAO;
-    private OrderDetailsDAO orderDetailsDAO;
-    private CartItemsDAO cartItemsDAO;
-    private CartDAO cartDAO;
-    private ReviewDAO reviewDAO;
-    private EntityManagerDAO entityManagerDAO;
 
+    private ProductsDAO productsDAO;
+
+    @Autowired
+    public void setProductsDAO(ProductsDAO productsDAO){
+        this.productsDAO = productsDAO;
+    }
+    private CustomerDAO customerDAO;
+    @Autowired
+    public void setCustomerDAO(CustomerDAO customerDAO){
+        this.customerDAO=customerDAO;
+    }
+    private OrderDetailsDAO orderDetailsDAO;
+    @Autowired
+    public void setOrderDetailsDAO(OrderDetailsDAO orderDetailsDAO){
+        this.orderDetailsDAO=orderDetailsDAO;
+    }
+    private CartItemsDAO cartItemsDAO;
+
+    @Autowired
+    public void setCartItemsDAO(CartItemsDAO cartItemsDAO){
+        this.cartItemsDAO = cartItemsDAO;
+    }
+    private CartDAO cartDAO;
+
+    @Autowired
+    public void setCartDAO(CartDAO cartDAO){
+        this.cartDAO = cartDAO;
+    }
+    private ReviewDAO reviewDAO;
+    public void setReviewDAO(ReviewDAO reviewDAO){
+        this.reviewDAO = reviewDAO;
+    }
+    private EntityManagerDAO entityManagerDAO;
+    public void setEntityManagerDAO(EntityManagerDAO entityManagerDAO){
+        this.entityManagerDAO = entityManagerDAO;
+    }
 
     @Override
     public boolean isValidProdId(int prod_id) {
@@ -34,9 +66,10 @@ public class ServiceDAOImpl implements ServiceDAO{
         return byId.isPresent();
     }
 
+
+
     @Override
     public CustomerDetails addCustomer(CustomerDetails customerDetails) {
-        customerDetails.setId(0);
         return customerDAO.save(customerDetails);
     }
 
@@ -86,7 +119,30 @@ public class ServiceDAOImpl implements ServiceDAO{
 
     @Override
     public CartItemDetails addToCart(int cart_id, int prod_id) {
-        return entityManagerDAO.AddCartItem(prod_id, cart_id);
+        Optional<ProductDetails> tempProd = productsDAO.findById(prod_id);
+        ProductDetails prod ;
+        if(tempProd.isPresent())
+       prod = tempProd.get();
+        else
+            throw new ProductNotFoundException("Product with id "+prod_id+" is not found");
+        CartItemDetails cartItem = new CartItemDetails(prod.getName(),prod.getPrice());
+        Optional<CartDetails> tempCart;
+
+        tempCart = cartDAO.findById(cart_id);
+        CartDetails cart;
+        if(tempCart.isEmpty()){
+                CartDetails newCart = new CartDetails(prod.getPrice());
+                newCart.setId(cart_id);
+                cartDAO.save(newCart);
+                cart = newCart;
+        }
+        else{
+            cart = tempCart.get();
+        }
+
+        cart.add(cartItem);
+        cartDAO.save(cart);
+        return cartItem;
     }
 
     @Override

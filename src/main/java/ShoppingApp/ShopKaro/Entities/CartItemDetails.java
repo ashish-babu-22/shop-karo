@@ -3,6 +3,7 @@ package ShoppingApp.ShopKaro.Entities;
 
 import javax.persistence.*;
 
+
 @Entity
 @Table(name = "cart_item_details")
 public class CartItemDetails {
@@ -19,14 +20,14 @@ public class CartItemDetails {
 
     @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
     @JoinColumn(name = "cart_id")
-    private CartDetails cartDetails;
+    private CartDetails cartDetails_inCI;
 
-    public CartDetails getCartDetails() {
-        return cartDetails;
+    public CartDetails getCartDetails_inCI() {
+        return cartDetails_inCI;
     }
 
-    public void setCartDetails(CartDetails cartDetails) {
-        this.cartDetails = cartDetails;
+    public void setCartDetails_inCI(CartDetails cartDetails_inCI) {
+        this.cartDetails_inCI = cartDetails_inCI;
     }
 
     public CartItemDetails(){}

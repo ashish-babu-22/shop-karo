@@ -26,6 +26,17 @@ primary key(customer_id)
 )auto_increment=1;
 
 show tables;
+create table cart_details
+(
+cart_id integer not null,
+total_price integer default null,
+customer_id integer,
+primary key(cart_id),
+foreign key(customer_id) references customer_details(customer_id)
+
+);
+
+show tables;
 
 create table cart_details
 (

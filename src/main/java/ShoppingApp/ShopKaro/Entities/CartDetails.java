@@ -11,30 +11,53 @@ public class CartDetails {
 
 
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cart_id")
     int id;
 
     @Column(name = "total_price")
     String totalPrice;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "customer_id")
+    private CustomerDetails customerDetails;
 
-    @OneToMany(mappedBy = "cartDetails",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "cartDetails_inCI",cascade = CascadeType.ALL)
     List<CartItemDetails> cartItemDetails;
 
-    @OneToOne(mappedBy = "cartDetails",cascade = CascadeType.ALL)
-    private OrderDetails orderDetails;
+    @OneToOne(mappedBy = "cartDetails_inOrd",cascade = CascadeType.ALL)
+    OrderDetails orderDetails;
+
 
     public CartDetails(){
 
     }
 
+
     public CartDetails(int id) {
         this.id = id;
     }
+
 
     public CartDetails(int id, List<CartItemDetails> cartItemDetails, OrderDetails orderDetails) {
         this.id = id;
         this.cartItemDetails = cartItemDetails;
         this.orderDetails = orderDetails;
+    }
+
+
+
+    public CartDetails(int id, String totalPrice) {
+        this.id = id;
+        this.totalPrice = totalPrice;
+    }
+
+    public CustomerDetails getCustomerDetails() {
+        return customerDetails;
+    }
+
+    public void setCustomerDetails(CustomerDetails customerDetails) {
+        this.customerDetails = customerDetails;
     }
 
     public CartDetails(String totalPrice) {

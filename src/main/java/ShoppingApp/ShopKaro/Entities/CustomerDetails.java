@@ -10,6 +10,7 @@ public class CustomerDetails {
     @Column(name = "customer_id")
     int id;
 
+    // name, mail, location, contact, password
     @Column(name = "name")
     String name;
 
@@ -25,28 +26,28 @@ public class CustomerDetails {
     @Column(name = "password")
     String password;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "customerDetails",cascade = CascadeType.ALL)
     private CartDetails cartDetails;
 
 
+    public CustomerDetails(String name, String mail, String location, String contact, String password) {
+        this.name = name;
+        this.mail = mail;
+        this.location = location;
+        this.contact = contact;
+        this.password = password;
+    }
+
+    public CartDetails getCartDetails() {
+        return cartDetails;
+    }
+
+    public void setCartDetails(CartDetails cartDetails) {
+        this.cartDetails = cartDetails;
+    }
 
     public  CustomerDetails(){}
 
-    public CustomerDetails(String name, String location, String contact) {
-        this.name = name;
-        this.location = location;
-        this.contact = contact;
-    }
-
-    @Override
-    public String toString() {
-        return "CustomerDetails{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", location='" + location + '\'' +
-                ", contact='" + contact + '\'' +
-                '}';
-    }
 
     public int getId() {
         return id;
@@ -94,5 +95,17 @@ public class CustomerDetails {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+
+    @Override
+    public String toString() {
+        return "CustomerDetails{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", mail='" + mail + '\'' +
+                ", location='" + location + '\'' +
+                ", contact='" + contact + '\'' +
+                '}';
     }
 }

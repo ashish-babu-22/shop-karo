@@ -1,8 +1,5 @@
 package ShoppingApp.ShopKaro.Entities;
 
-import org.springframework.core.annotation.Order;
-
-import javax.annotation.processing.Generated;
 import javax.persistence.*;
 
 @Entity
@@ -32,7 +29,7 @@ public class OrderDetails {
 
     @OneToOne(cascade = {CascadeType.ALL},fetch = FetchType.LAZY)
     @JoinColumn(name = "cart_id")
-    private CartDetails cartDetails;
+    private CartDetails cartDetails_inOrd;
 
     public OrderDetails(){}
 

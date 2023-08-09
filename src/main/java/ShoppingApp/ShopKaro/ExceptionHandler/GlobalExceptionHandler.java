@@ -6,17 +6,21 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
+
+    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+    Date dateObject = new Date();
+    String date = String.valueOf(dateObject);
     @ExceptionHandler
     public ResponseEntity<ProductErrorResponse> exceptionHandling(ProductNotFoundException exception){
         ProductErrorResponse error = new ProductErrorResponse(
                 HttpStatus.NOT_FOUND.value(),
                 exception.getMessage(),
-                String.valueOf(LocalTime.now())
+                date
         );
         return new ResponseEntity<>(error,HttpStatus.NOT_FOUND);
     }
@@ -26,7 +30,7 @@ public class GlobalExceptionHandler {
         ProductErrorResponse error = new ProductErrorResponse(
                 HttpStatus.NOT_FOUND.value(),
                 exception.getMessage(),
-                String.valueOf(LocalDateTime.now())
+                date
         );
         return new ResponseEntity<>(error,HttpStatus.NOT_FOUND);
     }
@@ -35,8 +39,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ProductErrorResponse> exceptionHandler(Exception exception){
         ProductErrorResponse errorResponse = new ProductErrorResponse(
                 HttpStatus.BAD_REQUEST.value(),
-                "Enter a valid parameter",
-                String.valueOf(LocalDateTime.now())
+                exception.getMessage(),
+                date
         );
         return new ResponseEntity<>(errorResponse,HttpStatus.BAD_REQUEST);
 
