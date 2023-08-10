@@ -15,6 +15,8 @@ import java.util.List;
 
 public class ShopKaroRest {
 
+    private String url = "http://localhost:8080/";
+
     private ServiceDAO serviceDAO;
 
     @Autowired
@@ -55,45 +57,41 @@ public class ShopKaroRest {
      */
     // name, mail, location, contact, password
     @PostMapping("/signup")
-    public RedirectView addCustomer(@RequestBody CustomerDetails customerDetails){
+    public String addCustomer(@RequestBody CustomerDetails customerDetails){
         CustomerDetails temp = serviceDAO.addCustomer(customerDetails);
 
         int id = temp.getId();
 
-        return new RedirectView(id+"/view_products");
+        return "GET-Method - "+url+id+"/view_products";
     }
 
 
     @PostMapping("/login")
-    public RedirectView logCustomer(@RequestBody CustomerDetails customerDetails){
+    public String logCustomer(@RequestBody CustomerDetails customerDetails){
 
         int id = serviceDAO.findUser(customerDetails);
         if(id == -1) throw new UserNotFoundException("Please Check the user details is valid (or) sign up");
-        return new RedirectView(id+"/view_products");
+        return "GET-Method - "+url+id+"/view_products";
 
     }
     @PostMapping("/modify_details")
-    public RedirectView modifyCustomer(@RequestBody CustomerDetails customerDetails){
+    public String modifyCustomer(@RequestBody CustomerDetails customerDetails){
 
         int id = serviceDAO.findUser(customerDetails);
-        if(id == -1) throw new UserNotFoundException("Please Check the user details is valid (or) sign up");
-        return new RedirectView(id+"/enter_new_details");
+        if(id == -1) throw new UserNotFoundException("Error in RestController");
+        return "PUT-Method - "+url+id+"/enter_new_details";
     }
 
     @PutMapping("{id}/enter_new_details")
-    public RedirectView changeDetails(@PathVariable int id, @RequestBody CustomerDetails customerDetails){
+    public String changeDetails(@PathVariable int id, @RequestBody CustomerDetails customerDetails){
         customerDetails.setId(id);
         serviceDAO.updateDetails(customerDetails);
-        return new RedirectView(id+"/view_products");
+        return "Modified Successfully\nGET-Method - "+url+id+"/view_products";
     }
 
 
     @GetMapping("{cart_id}/view_products")
     public List<ProductDetails> displayProducts(@PathVariable int cart_id){
-        if(!serviceDAO.isValidCartId(cart_id)){
-            throw new UserNotFoundException("Please Check the user - " + cart_id + " is valid (or) sign up");
-        }
-
         return serviceDAO.showProducts();
     }
 
@@ -149,6 +147,11 @@ public class ShopKaroRest {
     @PostMapping("/add_product")
     public ProductDetails addProduct(@RequestBody ProductDetails productDetails){
         return serviceDAO.addProduct(productDetails);
+    }
+    @PostMapping("/delete_product")
+    public String deleteProduct(@PathVariable int id){
+         serviceDAO.deleteProductById(id);
+         return "Product deleted successfully with id - "+id;
     }
 
     @PutMapping("/update_product")

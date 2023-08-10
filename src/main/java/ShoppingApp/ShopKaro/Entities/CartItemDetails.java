@@ -22,6 +22,7 @@ public class CartItemDetails {
     @JoinColumn(name = "cart_id")
     private CartDetails cartDetails_inCI;
 
+
     public CartDetails getCartDetails_inCI() {
         return cartDetails_inCI;
     }

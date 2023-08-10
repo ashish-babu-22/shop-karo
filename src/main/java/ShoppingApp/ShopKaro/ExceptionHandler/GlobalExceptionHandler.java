@@ -29,7 +29,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ProductErrorResponse> exceptionHandling(UserNotFoundException exception){
         ProductErrorResponse error = new ProductErrorResponse(
                 HttpStatus.NOT_FOUND.value(),
-                exception.getMessage(),
+                "User Not Found with ID = "+exception.getMessage(),
                 date
         );
         return new ResponseEntity<>(error,HttpStatus.NOT_FOUND);

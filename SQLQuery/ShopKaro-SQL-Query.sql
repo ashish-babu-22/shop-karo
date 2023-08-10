@@ -53,7 +53,7 @@ show tables;
 create table cart_item_details(
 product_id integer not null auto_increment,
 name varchar(20) default null,
-price varchar(20) default null,
+price integer default null,
 cart_id int,
 primary key(product_id),
 foreign key(cart_id) references cart_details(cart_id)

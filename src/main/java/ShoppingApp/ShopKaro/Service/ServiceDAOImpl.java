@@ -48,10 +48,6 @@ public class ServiceDAOImpl implements ServiceDAO{
     public void setReviewDAO(ReviewDAO reviewDAO){
         this.reviewDAO = reviewDAO;
     }
-    private EntityManagerDAO entityManagerDAO;
-    public void setEntityManagerDAO(EntityManagerDAO entityManagerDAO){
-        this.entityManagerDAO = entityManagerDAO;
-    }
 
     @Override
     public boolean isValidProdId(int prod_id) {
@@ -75,14 +71,12 @@ public class ServiceDAOImpl implements ServiceDAO{
 
     @Override
     public int findUser(CustomerDetails customerDetails) {
-        return entityManagerDAO.findId(customerDetails);
+        String mail = customerDetails.getMail();
+        String pass = customerDetails.getPassword();
+        return customerDAO.getCustomerIdByMailAndPass(mail,pass);
 
     }
 
-    @Override
-    public void saveProduct(ProductDetails productDetails) {
-        productsDAO.save(productDetails);
-    }
 
     @Override
     public List<ProductDetails> showProducts() {
@@ -107,13 +101,18 @@ public class ServiceDAOImpl implements ServiceDAO{
 
     @Override
     public List<CartItemDetails> showCartItems(int id) {
-        CartDetails temp = cartDAO.findById(id).get();
+        Optional<CartDetails> byId = cartDAO.findById(id);
+        CartDetails temp;
+        if(byId.isEmpty()){
+            throw new UserNotFoundException(id);
+        }
+        temp=byId.get();
         return temp.getCartItemDetails();
     }
 
     @Override
     public void deleteCartItemByProductId(int cart_id,int prod_id) {
-       entityManagerDAO.deleteCartItemByProductId(cart_id,prod_id);
+       cartItemsDAO.deleteProductInCartById(cart_id,prod_id);
     }
 
 
@@ -147,14 +146,29 @@ public class ServiceDAOImpl implements ServiceDAO{
 
     @Override
     public OrderDetails checkOut(int cart_id) {
-        CartDetails cart = cartDAO.findById(cart_id).get();
+        Optional<CartDetails> byId = cartDAO.findById(cart_id);
+        CartDetails cart;
+        if(byId.isPresent()) {
+            cart = byId.get();
+        }
+        else{
+            throw new UserNotFoundException(cart_id);
+        }
+
         List<CartItemDetails> cartItemDetails = cart.getCartItemDetails();
-        CustomerDetails cus = customerDAO.findById(cart_id).get();
+        Optional<CustomerDetails> byId1 = customerDAO.findById(cart_id);
+        CustomerDetails cus;
+        if(byId1.isPresent()){
+            cus = byId1.get();
+        }
+        else{
+            throw new UserNotFoundException(cart_id);
+        }
         String name = cus.getName();
         String location = cus.getLocation();
         String dateOfOrder = String.valueOf(LocalTime.now());
         String dateOfDelivery = String.valueOf(LocalTime.now().plusHours(240));
-        String amountPayable = String.valueOf(entityManagerDAO.totalPrice(cartItemDetails));
+        String amountPayable = String.valueOf(cartItemsDAO.totalPrice(cart_id));
         cart.setTotalPrice(amountPayable);
         cartDAO.save(cart);
         OrderDetails order = new OrderDetails(name,location,dateOfOrder,dateOfDelivery,amountPayable);
@@ -170,10 +184,24 @@ public class ServiceDAOImpl implements ServiceDAO{
 
     @Override
     public ReviewsDetails addReview(int cartId, int prodId, ReviewsDetails review) {
-        CustomerDetails cus = customerDAO.findById(cartId).get();
+        Optional<CustomerDetails> byId = customerDAO.findById(cartId);
+        CustomerDetails cus;
+        if(byId.isPresent()){
+            cus = byId.get();
+        }
+        else{
+            throw new UserNotFoundException(cartId);
+        }
         String name = cus.getName();
         review.setName(name);
-        ProductDetails prod = productsDAO.findById(prodId).get();
+        Optional<ProductDetails> byId1 = productsDAO.findById(prodId);
+        ProductDetails prod;
+        if(byId1.isPresent()){
+            prod = byId1.get();
+        }
+        else {
+            throw new ProductNotFoundException(prodId);
+        }
         prod.add(review);
         productsDAO.save(prod);
         return review;
@@ -188,7 +216,7 @@ public class ServiceDAOImpl implements ServiceDAO{
     public String deleteCustomer(int id) {
         if(isValidCartId(id))throw new UserNotFoundException("User ID Unknown");
         customerDAO.deleteById(id);
-        return "User "+ id + " deleted Successfully";
+        return "User " + id + " deleted Successfully";
     }
 
     @Override
@@ -209,7 +237,11 @@ public class ServiceDAOImpl implements ServiceDAO{
 
     @Override
     public ProductDetails vewProductById(int prodId) {
-        return productsDAO.findById(prodId).get();
+        Optional<ProductDetails> byId = productsDAO.findById(prodId);
+        if(byId.isEmpty()){
+            throw new ProductNotFoundException(prodId);
+        }
+        return byId.get();
     }
 
 
