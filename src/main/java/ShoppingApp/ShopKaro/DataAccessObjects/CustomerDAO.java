@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CustomerDAO extends JpaRepository<CustomerDetails,Integer> {
-    @Query("select id from CustomerDetails where mail=:mail and password=:password")
-    Integer getCustomerIdByMailAndPass(@Param("mail")String mail,@Param("password")String password);
+    @Query("select id from CustomerDetails where mail=:mail or contact=:contact and password=:password")
+    Integer getCustomerIdByMailAndPass(@Param("mail")String mail,@Param("password")String password,@Param("contact")String contact);
 }

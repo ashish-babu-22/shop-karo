@@ -26,8 +26,9 @@ public class CustomerDetails {
     @Column(name = "password")
     String password;
 
-    @OneToOne(mappedBy = "customerDetails",cascade = CascadeType.ALL)
-    private CartDetails cartDetails;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "cart_id")
+    private CartDetails cartDetailsInCus;
 
 
     public CustomerDetails(String name, String mail, String location, String contact, String password) {
@@ -38,12 +39,12 @@ public class CustomerDetails {
         this.password = password;
     }
 
-    public CartDetails getCartDetails() {
-        return cartDetails;
+    public CartDetails getCartDetailsInCus() {
+        return cartDetailsInCus;
     }
 
-    public void setCartDetails(CartDetails cartDetails) {
-        this.cartDetails = cartDetails;
+    public void setCartDetailsInCus(CartDetails cartDetailsInCus) {
+        this.cartDetailsInCus = cartDetailsInCus;
     }
 
     public  CustomerDetails(){}

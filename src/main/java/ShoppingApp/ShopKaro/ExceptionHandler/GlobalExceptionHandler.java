@@ -23,13 +23,21 @@ public class GlobalExceptionHandler {
                 date
         );
         return new ResponseEntity<>(error,HttpStatus.NOT_FOUND);
+    }  @ExceptionHandler
+    public ResponseEntity<ProductErrorResponse> exceptionHandling(BadRequestException exception){
+        ProductErrorResponse error = new ProductErrorResponse(
+                HttpStatus.BAD_REQUEST.value(),
+                exception.getMessage(),
+                date
+        );
+        return new ResponseEntity<>(error,HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler
     public ResponseEntity<ProductErrorResponse> exceptionHandling(UserNotFoundException exception){
         ProductErrorResponse error = new ProductErrorResponse(
                 HttpStatus.NOT_FOUND.value(),
-                "User Not Found with ID = "+exception.getMessage(),
+                exception.getMessage(),
                 date
         );
         return new ResponseEntity<>(error,HttpStatus.NOT_FOUND);

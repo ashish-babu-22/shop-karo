@@ -19,16 +19,31 @@ public class ProductDetails {
     String quantity;
 
     @Column(name = "price")
-    String price;
+    int price;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "cart_product",
+            joinColumns = @JoinColumn(name = "prod_id"),
+            inverseJoinColumns = @JoinColumn(name = "cart_id")
+    )
+    List<CartDetails> cartDetails;
 
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     List<ReviewsDetails> reviewsDetails;
 
+    public ProductDetails() {
+    }
 
-    public ProductDetails(String name, String quantity, String price) {
+    public ProductDetails(String name, String quantity, int price) {
         this.name = name;
         this.quantity = quantity;
+        this.price = price;
+    }
+
+    public ProductDetails(String name, int price) {
+        this.name = name;
         this.price = price;
     }
 
@@ -56,11 +71,11 @@ public class ProductDetails {
         this.quantity = quantity;
     }
 
-    public String getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 

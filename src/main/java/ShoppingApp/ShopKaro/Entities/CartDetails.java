@@ -17,13 +17,20 @@ public class CartDetails {
     int id;
 
     @Column(name = "total_price")
-    String totalPrice;
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "customer_id")
-    private CustomerDetails customerDetails;
+    int totalPrice;
+    @OneToOne(mappedBy = "cartDetailsInCus",cascade = CascadeType.ALL)
+    private CustomerDetails customerDetailsInCar;
 
-    @OneToMany(mappedBy = "cartDetails_inCI",cascade = CascadeType.ALL)
-    List<CartItemDetails> cartItemDetails;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "cart_product",
+            joinColumns = @JoinColumn(name = "cart_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id")
+    )
+    private List<ProductDetails> cartItemDetails;
+
+
+
 
     @OneToOne(mappedBy = "cartDetails_inOrd",cascade = CascadeType.ALL)
     OrderDetails orderDetails;
@@ -33,36 +40,33 @@ public class CartDetails {
 
     }
 
+    public CartDetails(int id,int totalPrice, CustomerDetails customerDetailsInCar) {
+        this.id = id;
+        this.totalPrice = totalPrice;
+        this.customerDetailsInCar = customerDetailsInCar;
+    }
 
     public CartDetails(int id) {
         this.id = id;
     }
 
 
-    public CartDetails(int id, List<CartItemDetails> cartItemDetails, OrderDetails orderDetails) {
-        this.id = id;
-        this.cartItemDetails = cartItemDetails;
-        this.orderDetails = orderDetails;
-    }
 
 
 
-    public CartDetails(int id, String totalPrice) {
+    public CartDetails(int id, int totalPrice) {
         this.id = id;
         this.totalPrice = totalPrice;
     }
 
-    public CustomerDetails getCustomerDetails() {
-        return customerDetails;
+    public CustomerDetails getCustomerDetailsInCar() {
+        return customerDetailsInCar;
     }
 
-    public void setCustomerDetails(CustomerDetails customerDetails) {
-        this.customerDetails = customerDetails;
+    public void setCustomerDetailsInCar(CustomerDetails customerDetailsInCar) {
+        this.customerDetailsInCar = customerDetailsInCar;
     }
 
-    public CartDetails(String totalPrice) {
-        this.totalPrice = totalPrice;
-    }
 
     public int getId() {
         return id;
@@ -72,20 +76,20 @@ public class CartDetails {
         this.id = id;
     }
 
-    public String getTotalPrice() {
+    public int getTotalPrice() {
         return totalPrice;
     }
 
-    public void setTotalPrice(String totalPrice) {
+    public void setTotalPrice(int totalPrice) {
         this.totalPrice = totalPrice;
     }
 
 
-    public List<CartItemDetails> getCartItemDetails() {
+    public List<ProductDetails> getCartItemDetails() {
         return cartItemDetails;
     }
 
-    public void setCartItemDetails(List<CartItemDetails> cartItemDetails) {
+    public void setCartItemDetails(List<ProductDetails> cartItemDetails) {
         this.cartItemDetails = cartItemDetails;
     }
 
@@ -107,14 +111,12 @@ public class CartDetails {
                 '}';
     }
 
-    public void add(CartItemDetails newItem){
+    public void add(ProductDetails newItem){
         if(cartItemDetails == null){
             cartItemDetails = new ArrayList<>();
         }
         cartItemDetails.add(newItem);
     }
 
-    public void delete(CartItemDetails oldItem){
 
-    }
 }

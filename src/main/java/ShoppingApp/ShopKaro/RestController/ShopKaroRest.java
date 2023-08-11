@@ -30,19 +30,21 @@ public class ShopKaroRest {
     }
     @GetMapping("/")
     public String enterDetails(){
-        return "Welcome to shopKaro\n \\login - to login to existing account \n \\signup - to signup a new account ";
+        return "Welcome to shopKaro\n \\" +
+                url+"/login - to login to existing account \n" +
+                url+"/signup - to signup a new account ";
     }
 
 
     /*
 
     API-List
-    /signup
+    /signup *
     /login
     /modify_details
     {id}/enter_new_details
-    {cart_id}/view_products
-    {cart_id}/view_products/{prod_id}
+    {cart_id}/view_products*
+    {cart_id}/view_products/{prod_id}*
     {cart_id}/view_products/{prod_id}/see_reviews
     {cart_id}/view_products/{prod_id}/add_review
     {cart_id}/add_to_cart/{prod_id}
@@ -92,7 +94,7 @@ public class ShopKaroRest {
 
     @GetMapping("{cart_id}/view_products")
     public List<ProductDetails> displayProducts(@PathVariable int cart_id){
-        return serviceDAO.showProducts();
+        return serviceDAO.showProducts(cart_id);
     }
 
 
@@ -111,7 +113,7 @@ public class ShopKaroRest {
         return serviceDAO.addReview(cart_id,prod_id,reviewsDetails);
     }
     @GetMapping("{cart_id}/add_to_cart/{prod_id}")
-    public CartItemDetails addToCart(@PathVariable("prod_id") int prod_id, @PathVariable("cart_id") int cart_id){
+    public ProductDetails addToCart(@PathVariable("prod_id") int prod_id, @PathVariable("cart_id") int cart_id){
 
         return serviceDAO.addToCart(cart_id,prod_id);
     }
@@ -123,7 +125,7 @@ public class ShopKaroRest {
     }
 
     @GetMapping("/{id}/show_cart_items")
-    public List<CartItemDetails> showCartProducts(@PathVariable int id){
+    public List<ProductDetails> showCartProducts(@PathVariable int id){
         return serviceDAO.showCartItems(id);
     }
 

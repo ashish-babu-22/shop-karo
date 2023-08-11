@@ -2,12 +2,12 @@ package ShoppingApp.ShopKaro.Service;
 
 import ShoppingApp.ShopKaro.DataAccessObjects.*;
 import ShoppingApp.ShopKaro.Entities.*;
+import ShoppingApp.ShopKaro.ExceptionHandler.BadRequestException;
 import ShoppingApp.ShopKaro.ExceptionHandler.ProductNotFoundException;
 import ShoppingApp.ShopKaro.ExceptionHandler.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
@@ -32,12 +32,12 @@ public class ServiceDAOImpl implements ServiceDAO{
     public void setOrderDetailsDAO(OrderDetailsDAO orderDetailsDAO){
         this.orderDetailsDAO=orderDetailsDAO;
     }
-    private CartItemsDAO cartItemsDAO;
-
-    @Autowired
-    public void setCartItemsDAO(CartItemsDAO cartItemsDAO){
-        this.cartItemsDAO = cartItemsDAO;
-    }
+//    private CartItemsDAO cartItemsDAO;
+//
+//    @Autowired
+//    public void setCartItemsDAO(CartItemsDAO cartItemsDAO){
+//        this.cartItemsDAO = cartItemsDAO;
+//    }
     private CartDAO cartDAO;
 
     @Autowired
@@ -66,20 +66,32 @@ public class ServiceDAOImpl implements ServiceDAO{
 
     @Override
     public CustomerDetails addCustomer(CustomerDetails customerDetails) {
+
+        if(customerDetails.getName() == null || customerDetails.getMail() == null || customerDetails.getPassword() == null || customerDetails.getContact() == null || customerDetails.getLocation() == null){
+            throw new BadRequestException("Please fill out every Field ");
+        }
+        CartDetails cart = new CartDetails();
+        cart.setId(customerDetails.getId());
+        customerDetails.setCartDetailsInCus(cart);
+        cartDAO.save(cart);
         return customerDAO.save(customerDetails);
     }
 
     @Override
     public int findUser(CustomerDetails customerDetails) {
         String mail = customerDetails.getMail();
+        String contact = customerDetails.getContact();
         String pass = customerDetails.getPassword();
-        return customerDAO.getCustomerIdByMailAndPass(mail,pass);
+        return customerDAO.getCustomerIdByMailAndPass(mail,pass,contact);
 
     }
 
 
     @Override
-    public List<ProductDetails> showProducts() {
+    public List<ProductDetails> showProducts(int id) {
+//        CartDetails cartDetails = new CartDetails(id,0);
+//        cartDAO.save(cartDetails);
+
         return productsDAO.findAll();
     }
 
@@ -100,11 +112,11 @@ public class ServiceDAOImpl implements ServiceDAO{
     }
 
     @Override
-    public List<CartItemDetails> showCartItems(int id) {
+    public List<ProductDetails> showCartItems(int id) {
         Optional<CartDetails> byId = cartDAO.findById(id);
         CartDetails temp;
         if(byId.isEmpty()){
-            throw new UserNotFoundException(id);
+            throw new UserNotFoundException("User Not Found with ID ="+ id);
         }
         temp=byId.get();
         return temp.getCartItemDetails();
@@ -112,36 +124,39 @@ public class ServiceDAOImpl implements ServiceDAO{
 
     @Override
     public void deleteCartItemByProductId(int cart_id,int prod_id) {
-       cartItemsDAO.deleteProductInCartById(cart_id,prod_id);
+       productsDAO.deleteProductInCartById(cart_id,prod_id);
     }
 
 
     @Override
-    public CartItemDetails addToCart(int cart_id, int prod_id) {
+    public ProductDetails addToCart(int cart_id, int prod_id) {
         Optional<ProductDetails> tempProd = productsDAO.findById(prod_id);
         ProductDetails prod ;
         if(tempProd.isPresent())
        prod = tempProd.get();
         else
             throw new ProductNotFoundException("Product with id "+prod_id+" is not found");
-        CartItemDetails cartItem = new CartItemDetails(prod.getName(),prod.getPrice());
         Optional<CartDetails> tempCart;
 
         tempCart = cartDAO.findById(cart_id);
         CartDetails cart;
         if(tempCart.isEmpty()){
-                CartDetails newCart = new CartDetails(prod.getPrice());
-                newCart.setId(cart_id);
-                cartDAO.save(newCart);
-                cart = newCart;
+//                CartDetails newCart = new CartDetails();
+//                newCart.setCustomerDetails(customerDAO.getReferenceById(cart_id));
+//                newCart.setId(cart_id);
+//                newCart.setTotalPrice(0);
+//                newCart.setOrderDetails(null);
+//                cartDAO.save(newCart);
+//                cart = newCart;
+            throw new UserNotFoundException("User Not Found with ID ="+ cart_id);
         }
         else{
             cart = tempCart.get();
         }
 
-        cart.add(cartItem);
+        cart.add(prod);
         cartDAO.save(cart);
-        return cartItem;
+        return prod;
     }
 
     @Override
@@ -152,23 +167,23 @@ public class ServiceDAOImpl implements ServiceDAO{
             cart = byId.get();
         }
         else{
-            throw new UserNotFoundException(cart_id);
+            throw new UserNotFoundException("User Not Found with ID ="+ cart_id);
         }
 
-        List<CartItemDetails> cartItemDetails = cart.getCartItemDetails();
+        List<ProductDetails> cartItemDetails = cart.getCartItemDetails();
         Optional<CustomerDetails> byId1 = customerDAO.findById(cart_id);
         CustomerDetails cus;
         if(byId1.isPresent()){
             cus = byId1.get();
         }
         else{
-            throw new UserNotFoundException(cart_id);
+            throw new UserNotFoundException("User Not Found with ID ="+ cart_id);
         }
         String name = cus.getName();
         String location = cus.getLocation();
         String dateOfOrder = String.valueOf(LocalTime.now());
         String dateOfDelivery = String.valueOf(LocalTime.now().plusHours(240));
-        String amountPayable = String.valueOf(cartItemsDAO.totalPrice(cart_id));
+        int amountPayable = productsDAO.totalPrice(cart_id);
         cart.setTotalPrice(amountPayable);
         cartDAO.save(cart);
         OrderDetails order = new OrderDetails(name,location,dateOfOrder,dateOfDelivery,amountPayable);
@@ -184,13 +199,16 @@ public class ServiceDAOImpl implements ServiceDAO{
 
     @Override
     public ReviewsDetails addReview(int cartId, int prodId, ReviewsDetails review) {
+        if(review.getComments()==null){
+            throw new UserNotFoundException("Please fill out every form");
+        }
         Optional<CustomerDetails> byId = customerDAO.findById(cartId);
         CustomerDetails cus;
         if(byId.isPresent()){
             cus = byId.get();
         }
         else{
-            throw new UserNotFoundException(cartId);
+            throw new UserNotFoundException("User Not Found with ID ="+ cartId);
         }
         String name = cus.getName();
         review.setName(name);
@@ -200,7 +218,7 @@ public class ServiceDAOImpl implements ServiceDAO{
             prod = byId1.get();
         }
         else {
-            throw new ProductNotFoundException(prodId);
+            throw new ProductNotFoundException("Product Not Found with ID = "+prodId);
         }
         prod.add(review);
         productsDAO.save(prod);
@@ -221,7 +239,9 @@ public class ServiceDAOImpl implements ServiceDAO{
 
     @Override
     public ProductDetails addProduct(ProductDetails productDetails) {
-        productDetails.setId(0);
+        if(productDetails.getName() == null || productDetails.getQuantity() == null || productDetails.getPrice() == 0){
+            throw new UserNotFoundException("Please Fill out every field");
+        }
         return productsDAO.save(productDetails);
     }
 
@@ -239,7 +259,7 @@ public class ServiceDAOImpl implements ServiceDAO{
     public ProductDetails vewProductById(int prodId) {
         Optional<ProductDetails> byId = productsDAO.findById(prodId);
         if(byId.isEmpty()){
-            throw new ProductNotFoundException(prodId);
+            throw new ProductNotFoundException("Product Not Found with ID = "+prodId);
         }
         return byId.get();
     }

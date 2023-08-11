@@ -25,7 +25,7 @@ public class OrderDetails {
     String DateOfDelivery;
 
     @Column(name = "amount_payable")
-    String amountPayable;
+    int amountPayable;
 
     @OneToOne(cascade = {CascadeType.ALL},fetch = FetchType.LAZY)
     @JoinColumn(name = "cart_id")
@@ -33,7 +33,7 @@ public class OrderDetails {
 
     public OrderDetails(){}
 
-    public OrderDetails(String name, String location, String dateOfOrder, String dateOfDelivery, String amountPayable) {
+    public OrderDetails(String name, String location, String dateOfOrder, String dateOfDelivery,int amountPayable) {
         this.name = name;
         this.location = location;
         DateOfOrder = dateOfOrder;
@@ -80,11 +80,11 @@ public class OrderDetails {
         DateOfOrder = dateOfOrder;
     }
 
-    public String getAmountPayable() {
+    public int getAmountPayable() {
         return amountPayable;
     }
 
-    public void setAmountPayable(String amountPayable) {
+    public void setAmountPayable(int amountPayable) {
         this.amountPayable = amountPayable;
     }
 

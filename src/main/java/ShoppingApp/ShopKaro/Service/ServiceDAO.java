@@ -14,17 +14,17 @@ public interface ServiceDAO {
      int findUser(CustomerDetails customerDetails);
     //Products Entity methods
 
-     List<ProductDetails> showProducts();
+     List<ProductDetails> showProducts(int id);
 
      void deleteProductById(int id);
 
     // Cart Entity methods
 
-     List<CartItemDetails> showCartItems(int id);
+     List<ProductDetails> showCartItems(int id);
      ProductDetails selectProductById(int id);
      void deleteCartItemByProductId(int cart_id,int prod_id);
 
-     CartItemDetails addToCart(int cart_id, int prod_id);
+     ProductDetails addToCart(int cart_id, int prod_id);
 
      OrderDetails checkOut(int cart_id);
 
