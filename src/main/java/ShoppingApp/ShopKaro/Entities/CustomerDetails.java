@@ -8,105 +8,107 @@ public class CustomerDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "customer_id")
-    int id;
+    int CustomerID;
 
     // name, mail, location, contact, password
     @Column(name = "name")
-    String name;
+    String Name;
 
     @Column(name = "mail")
-    String mail;
+    String Mail;
+
 
     @Column(name = "location")
-    String location;
+    String Location;
 
     @Column(name = "contact")
-    String contact ;
+    String Contact ;
 
     @Column(name = "password")
-    String password;
+    String Password;
+
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "cart_id")
-    private CartDetails cartDetailsInCus;
+    private CartDetails CartItemDetails;
 
 
     public CustomerDetails(String name, String mail, String location, String contact, String password) {
-        this.name = name;
-        this.mail = mail;
-        this.location = location;
-        this.contact = contact;
-        this.password = password;
+        this.Name = name;
+        this.Mail = mail;
+        this.Location = location;
+        this.Contact = contact;
+        this.Password = password;
     }
 
-    public CartDetails getCartDetailsInCus() {
-        return cartDetailsInCus;
+    public CartDetails getCartItemDetails() {
+        return CartItemDetails;
     }
 
-    public void setCartDetailsInCus(CartDetails cartDetailsInCus) {
-        this.cartDetailsInCus = cartDetailsInCus;
+    public void setCartItemDetails(CartDetails cartItemDetails) {
+        this.CartItemDetails = cartItemDetails;
     }
 
     public  CustomerDetails(){}
 
 
-    public int getId() {
-        return id;
+    public int getCustomerID() {
+        return CustomerID;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setCustomerID(int customerID) {
+        this.CustomerID = customerID;
     }
 
     public String getName() {
-        return name;
+        return Name;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.Name = name;
     }
 
     public String getMail() {
-        return mail;
+        return Mail;
     }
 
     public void setMail(String mail) {
-        this.mail = mail;
+        this.Mail = mail;
     }
 
     public String getLocation() {
-        return location;
+        return Location;
     }
 
     public void setLocation(String location) {
-        this.location = location;
+        this.Location = location;
     }
 
     public String getContact() {
-        return contact;
+        return Contact;
     }
 
     public void setContact(String contact) {
-        this.contact = contact;
+        this.Contact = contact;
     }
 
     public String getPassword() {
-        return password;
+        return Password;
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.Password = password;
     }
 
 
     @Override
     public String toString() {
         return "CustomerDetails{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", mail='" + mail + '\'' +
-                ", location='" + location + '\'' +
-                ", contact='" + contact + '\'' +
+                "id=" + CustomerID +
+                ", name='" + Name + '\'' +
+                ", mail='" + Mail + '\'' +
+                ", location='" + Location + '\'' +
+                ", contact='" + Contact + '\'' +
                 '}';
     }
 }

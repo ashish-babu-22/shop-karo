@@ -10,16 +10,16 @@ public class ProductDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_id")
-    int id;
+    int ProductID;
 
     @Column(name = "name")
-    String name;
+    String Name;
 
     @Column(name ="quantity")
-    String quantity;
+    String Quantity;
 
     @Column(name = "price")
-    int price;
+    int Price;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
@@ -31,76 +31,76 @@ public class ProductDetails {
 
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
-    List<ReviewsDetails> reviewsDetails;
+    List<ReviewsDetails> ReviewsDetails;
 
     public ProductDetails() {
     }
 
     public ProductDetails(String name, String quantity, int price) {
-        this.name = name;
-        this.quantity = quantity;
-        this.price = price;
+        this.Name = name;
+        this.Quantity = quantity;
+        this.Price = price;
     }
 
     public ProductDetails(String name, int price) {
-        this.name = name;
-        this.price = price;
+        this.Name = name;
+        this.Price = price;
     }
 
-    public int getId() {
-        return id;
+    public int getProductID() {
+        return ProductID;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setProductID(int productID) {
+        this.ProductID = productID;
     }
 
     public String getName() {
-        return name;
+        return Name;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.Name = name;
     }
 
     public String getQuantity() {
-        return quantity;
+        return Quantity;
     }
 
     public void setQuantity(String quantity) {
-        this.quantity = quantity;
+        this.Quantity = quantity;
     }
 
     public int getPrice() {
-        return price;
+        return Price;
     }
 
     public void setPrice(int price) {
-        this.price = price;
+        this.Price = price;
     }
 
     public List<ReviewsDetails> getReviewsDetails() {
-        return reviewsDetails;
+        return ReviewsDetails;
     }
 
     public void setReviewsDetails(List<ReviewsDetails> reviewsDetails) {
-        this.reviewsDetails = reviewsDetails;
+        this.ReviewsDetails = reviewsDetails;
     }
 
     @Override
     public String toString() {
         return "ProductDetails{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", quantity='" + quantity + '\'' +
-                ", price='" + price + '\'' +
+                "id=" + ProductID +
+                ", name='" + Name + '\'' +
+                ", quantity='" + Quantity + '\'' +
+                ", price='" + Price + '\'' +
                 '}';
     }
 
     public void add(ReviewsDetails review){
-        if(reviewsDetails==null){
-            reviewsDetails = new ArrayList<>();
+        if(ReviewsDetails ==null){
+            ReviewsDetails = new ArrayList<>();
         }
-        reviewsDetails.add(review);
+        ReviewsDetails.add(review);
     }
 }

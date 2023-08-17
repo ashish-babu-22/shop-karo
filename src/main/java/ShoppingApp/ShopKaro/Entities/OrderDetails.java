@@ -9,13 +9,13 @@ public class OrderDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_id")
-    int id;
+    int OrderID;
 
     @Column(name = "name")
-    String name;
+    String Name;
 
     @Column(name = "location")
-    String location;
+    String Location;
 
 
     @Column(name  = "doo")
@@ -25,28 +25,28 @@ public class OrderDetails {
     String DateOfDelivery;
 
     @Column(name = "amount_payable")
-    int amountPayable;
+    int AmountPayable;
 
     @OneToOne(cascade = {CascadeType.ALL},fetch = FetchType.LAZY)
     @JoinColumn(name = "cart_id")
-    private CartDetails cartDetails_inOrd;
+    CartDetails CartDetails;
 
     public OrderDetails(){}
 
     public OrderDetails(String name, String location, String dateOfOrder, String dateOfDelivery,int amountPayable) {
-        this.name = name;
-        this.location = location;
+        this.Name = name;
+        this.Location = location;
         DateOfOrder = dateOfOrder;
         DateOfDelivery = dateOfDelivery;
-        this.amountPayable = amountPayable;
+        this.AmountPayable = amountPayable;
     }
 
-    public int getId() {
-        return id;
+    public int getOrderID() {
+        return OrderID;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setOrderID(int orderID) {
+        this.OrderID = orderID;
     }
     public String getDateOfDelivery() {
         return DateOfDelivery;
@@ -57,19 +57,19 @@ public class OrderDetails {
     }
 
     public String getName() {
-        return name;
+        return Name;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.Name = name;
     }
 
     public String getLocation() {
-        return location;
+        return Location;
     }
 
     public void setLocation(String location) {
-        this.location = location;
+        this.Location = location;
     }
 
     public String getDateOfOrder() {
@@ -81,22 +81,30 @@ public class OrderDetails {
     }
 
     public int getAmountPayable() {
-        return amountPayable;
+        return AmountPayable;
     }
 
     public void setAmountPayable(int amountPayable) {
-        this.amountPayable = amountPayable;
+        this.AmountPayable = amountPayable;
+    }
+
+    public CartDetails getCartDetails_inOrd() {
+        return CartDetails;
+    }
+
+    public void setCartDetails_inOrd(CartDetails cartDetails_inOrd) {
+        this.CartDetails = cartDetails_inOrd;
     }
 
     @Override
     public String toString() {
         return "OrderDetails{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", location='" + location + '\'' +
+                "id=" + OrderID +
+                ", name='" + Name + '\'' +
+                ", location='" + Location + '\'' +
                 ", DateOfOrder='" + DateOfOrder + '\'' +
                 ", DateOfDelivery='" + DateOfDelivery + '\'' +
-                ", amountPayable='" + amountPayable + '\'' +
+                ", amountPayable='" + AmountPayable + '\'' +
                 '}';
     }
 }

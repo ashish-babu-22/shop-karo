@@ -6,7 +6,6 @@ import ShoppingApp.ShopKaro.ExceptionHandler.UserNotFoundException;
 import ShoppingApp.ShopKaro.Service.ServiceDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.List;
 
@@ -15,9 +14,9 @@ import java.util.List;
 
 public class ShopKaroRest {
 
-    private String url = "http://localhost:8080/";
+    private final String url = "http://localhost:8080/";
 
-    private ServiceDAO serviceDAO;
+    private final ServiceDAO serviceDAO;
 
     @Autowired
     public ShopKaroRest(ServiceDAO serviceDAO){
@@ -30,9 +29,9 @@ public class ShopKaroRest {
     }
     @GetMapping("/")
     public String enterDetails(){
-        return "Welcome to shopKaro\n \\" +
-                url+"/login - to login to existing account \n" +
-                url+"/signup - to signup a new account ";
+        return "Welcome to shopKaro\n " +
+                url+"login - to login to existing account \n" +
+                url+"signup - to signup a new account ";
     }
 
 
@@ -62,31 +61,32 @@ public class ShopKaroRest {
     public String addCustomer(@RequestBody CustomerDetails customerDetails){
         CustomerDetails temp = serviceDAO.addCustomer(customerDetails);
 
-        int id = temp.getId();
-
-        return "GET-Method - "+url+id+"/view_products";
+        int id = temp.getCustomerID();
+        String name  = temp.getName();
+        return "Welcome "+name+"\nGET-Method - "+url+id+"/view_products";
     }
 
 
     @PostMapping("/login")
     public String logCustomer(@RequestBody CustomerDetails customerDetails){
 
-        int id = serviceDAO.findUser(customerDetails);
+        int id = serviceDAO.findUserId(customerDetails);
         if(id == -1) throw new UserNotFoundException("Please Check the user details is valid (or) sign up");
-        return "GET-Method - "+url+id+"/view_products";
+        String name  = serviceDAO.findUserName(id);
+        return "Welcome "+name+"\nGET-Method - "+url+id+"/view_products";
 
     }
     @PostMapping("/modify_details")
     public String modifyCustomer(@RequestBody CustomerDetails customerDetails){
 
-        int id = serviceDAO.findUser(customerDetails);
+        int id = serviceDAO.findUserId(customerDetails);
         if(id == -1) throw new UserNotFoundException("Error in RestController");
         return "PUT-Method - "+url+id+"/enter_new_details";
     }
 
     @PutMapping("{id}/enter_new_details")
     public String changeDetails(@PathVariable int id, @RequestBody CustomerDetails customerDetails){
-        customerDetails.setId(id);
+        customerDetails.setCustomerID(id);
         serviceDAO.updateDetails(customerDetails);
         return "Modified Successfully\nGET-Method - "+url+id+"/view_products";
     }
@@ -109,7 +109,7 @@ public class ShopKaroRest {
 
 
     @PostMapping("{cart_id}/view_products/{prod_id}/add_review")
-    public ReviewsDetails addReview(@PathVariable("cart_id")int cart_id,@PathVariable("prod_id")int prod_id, @RequestBody ReviewsDetails reviewsDetails){
+    public List<ReviewsDetails> addReview(@PathVariable("cart_id")int cart_id, @PathVariable("prod_id")int prod_id, @RequestBody ReviewsDetails reviewsDetails){
         return serviceDAO.addReview(cart_id,prod_id,reviewsDetails);
     }
     @GetMapping("{cart_id}/add_to_cart/{prod_id}")
@@ -142,8 +142,8 @@ public class ShopKaroRest {
     }
 
     @DeleteMapping("/delete_customer/{cus_id}")
-    public String deleteCustomer(@PathVariable int id){
-        return serviceDAO.deleteCustomer(id);
+    public String deleteCustomer(@PathVariable int cus_id){
+        return serviceDAO.deleteCustomer(cus_id);
     }
 
     @PostMapping("/add_product")

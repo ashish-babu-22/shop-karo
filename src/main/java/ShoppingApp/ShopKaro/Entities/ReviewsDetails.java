@@ -10,54 +10,54 @@ public class ReviewsDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "review_id")
-    int id;
+    int ReviewID;
 
     @Column(name = "name")
-    String name;
+    String Name;
 
     @Column(name = "comments")
-    String comments;
+    String Comments;
 
     public ReviewsDetails(){}
 
     public ReviewsDetails(String name, String comments) {
-        this.name = name;
-        this.comments = comments;
+        this.Name = name;
+        this.Comments = comments;
     }
  public ReviewsDetails( String comments) {
-        this.comments = comments;
+        this.Comments = comments;
     }
 
-    public int getId() {
-        return id;
+    public int getReviewID() {
+        return ReviewID;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setReviewID(int reviewID) {
+        this.ReviewID = reviewID;
     }
 
     public String getName() {
-        return name;
+        return Name;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.Name = name;
     }
 
     public String getComments() {
-        return comments;
+        return Comments;
     }
 
     public void setComments(String comments) {
-        this.comments = comments;
+        this.Comments = comments;
     }
 
     @Override
     public String toString() {
         return "ReviewsDetails{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", comments='" + comments + '\'' +
+                "id=" + ReviewID +
+                ", name='" + Name + '\'' +
+                ", comments='" + Comments + '\'' +
                 '}';
     }
 }

@@ -6,12 +6,12 @@ import java.util.List;
 
 public interface ServiceDAO {
 
-    boolean isValidProdId(int id);
-    boolean isValidCartId(int id);
+
 
     CustomerDetails addCustomer(CustomerDetails customerDetails);
 
-     int findUser(CustomerDetails customerDetails);
+     int findUserId(CustomerDetails customerDetails);
+     String findUserName(int id);
     //Products Entity methods
 
      List<ProductDetails> showProducts(int id);
@@ -30,7 +30,7 @@ public interface ServiceDAO {
 
     List<ReviewsDetails> displayReviews(int prod_id);
 
-    ReviewsDetails addReview(int cartId, int prodId, ReviewsDetails reviewsDetails);
+    List<ReviewsDetails> addReview(int cartId, int prodId, ReviewsDetails reviewsDetails);
 
     List<CustomerDetails> listCustomers();
 

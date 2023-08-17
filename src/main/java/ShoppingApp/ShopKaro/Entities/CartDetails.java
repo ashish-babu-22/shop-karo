@@ -14,12 +14,10 @@ public class CartDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cart_id")
-    int id;
+    int cartId;
 
     @Column(name = "total_price")
     int totalPrice;
-    @OneToOne(mappedBy = "cartDetailsInCus",cascade = CascadeType.ALL)
-    private CustomerDetails customerDetailsInCar;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
@@ -32,48 +30,40 @@ public class CartDetails {
 
 
 
-    @OneToOne(mappedBy = "cartDetails_inOrd",cascade = CascadeType.ALL)
-    OrderDetails orderDetails;
+//    @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "cart_id")
+//    OrderDetails orderDetails;
 
 
     public CartDetails(){
 
     }
 
-    public CartDetails(int id,int totalPrice, CustomerDetails customerDetailsInCar) {
-        this.id = id;
-        this.totalPrice = totalPrice;
-        this.customerDetailsInCar = customerDetailsInCar;
-    }
-
-    public CartDetails(int id) {
-        this.id = id;
-    }
-
-
-
-
-
-    public CartDetails(int id, int totalPrice) {
-        this.id = id;
+    public CartDetails(int cartId, int totalPrice, CustomerDetails customerDetailsInCar) {
+        this.cartId = cartId;
         this.totalPrice = totalPrice;
     }
 
-    public CustomerDetails getCustomerDetailsInCar() {
-        return customerDetailsInCar;
-    }
-
-    public void setCustomerDetailsInCar(CustomerDetails customerDetailsInCar) {
-        this.customerDetailsInCar = customerDetailsInCar;
+    public CartDetails(int cartId) {
+        this.cartId = cartId;
     }
 
 
-    public int getId() {
-        return id;
+
+
+
+    public CartDetails(int cartId, int totalPrice) {
+        this.cartId = cartId;
+        this.totalPrice = totalPrice;
     }
 
-    public void setId(int id) {
-        this.id = id;
+
+    public int getCartId() {
+        return cartId;
+    }
+
+    public void setCartId(int cartId) {
+        this.cartId = cartId;
     }
 
     public int getTotalPrice() {
@@ -93,21 +83,21 @@ public class CartDetails {
         this.cartItemDetails = cartItemDetails;
     }
 
-    public OrderDetails getOrderDetails() {
-        return orderDetails;
-    }
-
-    public void setOrderDetails(OrderDetails orderDetails) {
-        this.orderDetails = orderDetails;
-    }
+//    public OrderDetails getOrderDetails() {
+//        return orderDetails;
+//    }
+//
+//    public void setOrderDetails(OrderDetails orderDetails) {
+//        this.orderDetails = orderDetails;
+//    }
 
     @Override
     public String toString() {
         return "CartDetails{" +
-                "id=" + id +
+                "id=" + cartId +
                 ", totalPrice='" + totalPrice + '\'' +
                 ", cartItemDetails=" + cartItemDetails +
-                ", orderDetails=" + orderDetails +
+//                ", orderDetails=" + orderDetails +
                 '}';
     }
 
