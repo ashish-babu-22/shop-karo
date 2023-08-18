@@ -19,8 +19,4 @@ public interface ProductsDAO extends JpaRepository<ProductDetails,Integer> {
             "WHERE cp.cart_id = :cart_id",nativeQuery = true)
     Integer totalPrice(@Param("cart_id")int cart_id);
 }
-//    @Query("SELECT SUM(p.price) " +
-//            "FROM ProductDetails p " +
-//            "JOIN CartProduct cp ON p.productId = cp.productId " +
-//            "WHERE cp.cartId = :cart_id")
-//    Integer totalPrice(@Param("cart_id") int cart_id);
+

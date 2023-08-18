@@ -32,12 +32,7 @@ public class ServiceDAOImpl implements ServiceDAO{
     public void setOrderDetailsDAO(OrderDetailsDAO orderDetailsDAO){
         this.orderDetailsDAO=orderDetailsDAO;
     }
-//    private CartItemsDAO cartItemsDAO;
-//
-//    @Autowired
-//    public void setCartItemsDAO(CartItemsDAO cartItemsDAO){
-//        this.cartItemsDAO = cartItemsDAO;
-//    }
+
     private CartDAO cartDAO;
 
     @Autowired
@@ -59,6 +54,9 @@ public class ServiceDAOImpl implements ServiceDAO{
         if(customerDetails.getName() == null || customerDetails.getMail() == null || customerDetails.getPassword() == null || customerDetails.getContact() == null || customerDetails.getLocation() == null){
             throw new BadRequestException("Please fill out every Field ");
         }
+
+        customerDAO.addToUserDB(customerDetails.getName(),"{noop}"+customerDetails.getPassword());
+        customerDAO.addToRolesDB(customerDetails.getName());
         CartDetails cart = new CartDetails();
         cart.setCartId(customerDetails.getCustomerID());
         customerDetails.setCartItemDetails(cart);
@@ -83,8 +81,6 @@ public class ServiceDAOImpl implements ServiceDAO{
 
     @Override
     public List<ProductDetails> showProducts(int id) {
-//        CartDetails cartDetails = new CartDetails(id,0);
-//        cartDAO.save(cartDetails);
 
         return productsDAO.findAll();
     }
@@ -135,13 +131,7 @@ public class ServiceDAOImpl implements ServiceDAO{
         tempCart = cartDAO.findById(cart_id);
         CartDetails cart;
         if(tempCart.isEmpty()){
-//                CartDetails newCart = new CartDetails();
-//                newCart.setCustomerDetails(customerDAO.getReferenceById(cart_id));
-//                newCart.setId(cart_id);
-//                newCart.setTotalPrice(0);
-//                newCart.setOrderDetails(null);
-//                cartDAO.save(newCart);
-//                cart = newCart;
+
             throw new UserNotFoundException("User Not Found with ID ="+ cart_id);
         }
         else{
@@ -185,7 +175,6 @@ public class ServiceDAOImpl implements ServiceDAO{
         order.setCartDetails_inOrd(cart);
         orderDetailsDAO.save(order);
         cartDAO.save(cart);
-        //return orderDetailsDAO.findById(order.getId()).get();
         return order;}
 
     @Override
@@ -262,7 +251,4 @@ public class ServiceDAOImpl implements ServiceDAO{
         }
         return byId.get();
     }
-
-
-
 }

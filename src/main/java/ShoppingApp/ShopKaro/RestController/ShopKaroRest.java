@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping
+@RequestMapping("/shopkaro/")
 
 public class ShopKaroRest {
 
@@ -23,7 +23,7 @@ public class ShopKaroRest {
         this.serviceDAO=serviceDAO;
     }
 
-    @GetMapping("/error")
+    @GetMapping("/shopkaro/error")
     public ProductErrorResponse errorResponse() throws Exception {
         throw new Exception("Something went wrong");
     }
@@ -50,6 +50,8 @@ public class ShopKaroRest {
     {cart_id}/delete_from_cart/{prod_id}
     {id}/show_cart_items
     {cart_id}/place_order
+
+    <---Admin---->
     /view_customers
     /delete_customer/{cus_id}
     /add_product
@@ -135,30 +137,5 @@ public class ShopKaroRest {
     }
 
 
-
-    @GetMapping("/view_customers")
-    public List<CustomerDetails> listCustomers(){
-        return serviceDAO.listCustomers();
-    }
-
-    @DeleteMapping("/delete_customer/{cus_id}")
-    public String deleteCustomer(@PathVariable int cus_id){
-        return serviceDAO.deleteCustomer(cus_id);
-    }
-
-    @PostMapping("/add_product")
-    public ProductDetails addProduct(@RequestBody ProductDetails productDetails){
-        return serviceDAO.addProduct(productDetails);
-    }
-    @PostMapping("/delete_product")
-    public String deleteProduct(@PathVariable int id){
-         serviceDAO.deleteProductById(id);
-         return "Product deleted successfully with id - "+id;
-    }
-
-    @PutMapping("/update_product")
-    public ProductDetails updateProduct(@RequestBody ProductDetails productDetails){
-        return serviceDAO.updateProduct(productDetails);
-    }
 
 }

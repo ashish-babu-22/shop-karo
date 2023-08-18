@@ -16,15 +16,14 @@ primary key(product_id)
 )auto_increment=1001; customer
 
 show tables;
+
 drop table  if exists cart_details;
 
 create table cart_details
 (
 cart_id integer not null auto_increment,
 total_price integer default null,
-
 primary key(cart_id)
-
 )auto_increment=1;
 
 drop table  if exists cart_product;
@@ -35,7 +34,6 @@ product_id integer not null,
 primary key(cart_id,product_id),
 foreign key (product_id) references product_details(product_id),
 foreign key(cart_id) references cart_details(cart_id));
-
 
 show tables;
 
@@ -52,7 +50,6 @@ primary key(customer_id),
 cart_id integer,
 foreign key(cart_id) references cart_details(cart_id)
 )auto_increment=1;
-
 
 show tables;
 drop table  if exists order_details;
@@ -72,7 +69,6 @@ foreign key (cart_id) references cart_details(cart_id)
 
 show tables;
 
-
 drop table  if exists review_details;
 
 create table review_details(
@@ -83,6 +79,38 @@ product_id integer,
 primary key(review_id),
 foreign key(product_id) references product_details(product_id)
 )auto_increment=1;
+
+show tables;
+
+drop table  if exists users;
+
+create table users(
+username varchar(30) primary key,
+password varchar(30),
+status tinyint
+);
+
+insert into users values('gokul','{noop}admin123',1);
+insert into users values('thilak','{noop}admin123',1);
+insert into users values('jeff','{noop}admin123',1);
+
+select * from users;
+
+show tables;
+
+drop table  if exists roles;
+
+create table roles(
+username varchar(30) primary key,
+role varchar(30),
+foreign key (username) references users(username)
+);
+
+insert into roles values('gokul','ROLE_ADMIN');
+insert into roles values('thilak','ROLE_ADMIN');
+insert into roles values('jeff','ROLE_ADMIN');
+
+select * from roles;
 
 show tables;
 

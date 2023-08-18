@@ -30,10 +30,6 @@ public class CartDetails {
 
 
 
-//    @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "cart_id")
-//    OrderDetails orderDetails;
-
 
     public CartDetails(){
 
@@ -83,13 +79,6 @@ public class CartDetails {
         this.cartItemDetails = cartItemDetails;
     }
 
-//    public OrderDetails getOrderDetails() {
-//        return orderDetails;
-//    }
-//
-//    public void setOrderDetails(OrderDetails orderDetails) {
-//        this.orderDetails = orderDetails;
-//    }
 
     @Override
     public String toString() {
