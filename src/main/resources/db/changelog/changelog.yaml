@@ -1,0 +1,284 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: Ashish-Babu
+      changes:
+        - dropAll:
+            databaseName: shopkardhoo
+
+  - changeSet:
+      id: 2
+      author: Ashish-Babu
+      changes:
+        - createDatabase:
+            catalogName: null
+            schemaName: null
+            databaseName: shopkardho
+
+  - changeSet:
+      id: 3
+      author: ashish-babu
+      changes:
+        - sql:
+            dbms: h2, mysql
+            splitStatements: true
+            endDelimiter: ;
+            sql: "USE shopkardho;"
+
+  - changeSet:
+      id: 4
+      author: ashish-babu
+      changes:
+        - createTable:
+            tableName: product_details
+            columns:
+              - column:
+                  name: product_id
+                  type: INT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: VARCHAR(50)
+                  defaultValue: null
+              - column:
+                  name: quantity
+                  type: VARCHAR(30)
+                  defaultValue: null
+              - column:
+                  name: price
+                  type: INT
+                  defaultValue: null
+
+  - changeSet:
+      id: 5
+      author: ashish-babu
+      changes:
+        - sql:
+            dbms: h2, mysql
+            splitStatements: true
+            endDelimiter: ;
+            sql: "ALTER TABLE product_details AUTO_INCREMENT = 1001;"
+
+  - changeSet:
+      id: 6
+      author: ABZ
+      changes:
+        - createTable:
+            tableName: cart_details
+            columns:
+              - column:
+                  name: cart_id
+                  type: INT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: total_price
+                  type: INT
+                  defaultValue: null
+
+  - changeSet:
+      id: 7
+      author: ABZ
+      changes:
+        - sql:
+            dbms: h2, mysql
+            splitStatements: true
+            endDelimiter: ;
+            sql: "ALTER TABLE cart_details AUTO_INCREMENT = 1;"
+
+  - changeSet:
+      id: 8
+      author: ABZ
+      changes:
+        - createTable:
+            tableName: cart_product
+            columns:
+              - column:
+                  name: cart_id
+                  type: INT
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: product_id
+                  type: INT
+                  constraints:
+                    primaryKey: true
+        - addForeignKeyConstraint:
+            baseTableName: cart_product
+            baseColumnNames: cart_id
+            referencedTableName: cart_details
+            referencedColumnNames: cart_id
+            constraintName: fk_cart_product_details
+        - addForeignKeyConstraint:
+            baseTableName: cart_product
+            baseColumnNames: product_id
+            referencedTableName: product_details
+            referencedColumnNames: product_id
+            constraintName: fk_product_cart_details
+
+  - changeSet:
+      id: 9
+      author: ABZ
+      changes:
+        - createTable:
+            tableName: customer_details
+            columns:
+              - column:
+                  name: customer_id
+                  type: INT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: VARCHAR(30)
+                  defaultValue: null
+              - column:
+                  name: contact
+                  type: VARCHAR(15)
+                  defaultValue: null
+
+              - column:
+                  name: mail
+                  type: VARCHAR(30)
+                  defaultValue: null
+
+              - column:
+                  name: password
+                  type: VARCHAR(30)
+                  defaultValue: null
+              - column:
+                  name: location
+                  type: VARCHAR(20)
+                  defaultValue: null
+              - column:
+                  name: cart_id
+                  type: INT
+        - addForeignKeyConstraint:
+            baseTableName: customer_details
+            baseColumnNames: cart_id
+            referencedTableName: cart_details
+            referencedColumnNames: cart_id
+            constraintName: fk_cart_customer_details
+
+  - changeSet:
+      id: 10
+      author: ABZ
+      changes:
+        - createTable:
+            tableName: order_details
+            columns:
+              - column:
+                  name: order_id
+                  type: INT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: VARCHAR(40)
+                  defaultValue: null
+              - column:
+                  name: location
+                  type: VARCHAR(40)
+                  defaultValue: null
+              - column:
+                  name: payment_mode
+                  type: VARCHAR(30)
+                  defaultValue: null
+              - column:
+                  name: doo
+                  type: VARCHAR(10)
+                  defaultValue: null
+              - column:
+                  name: dod
+                  type: VARCHAR(10)
+                  defaultValue: null
+              - column:
+                  name: amount_payable
+                  type: VARCHAR(10)
+                  defaultValue: null
+              - column:
+                  name: cart_id
+                  type: INT
+        - addForeignKeyConstraint:
+            baseTableName: order_details
+            baseColumnNames: cart_id
+            referencedTableName: cart_details
+            referencedColumnNames: cart_id
+            constraintName: fk_order_cart_detail
+  - changeSet:
+      id: 11
+      author: ABZ
+      changes:
+        - createTable:
+            tableName: review_details
+            columns:
+              - column:
+                  name: review_id
+                  type: INT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: VARCHAR(40)
+                  defaultValue: null
+              - column:
+                  name: comments
+                  type: VARCHAR(100)
+                  defaultValue: null
+              - column:
+                  name: product_id
+                  type: INT
+        - addForeignKeyConstraint:
+            baseTableName: review_details
+            baseColumnNames: product_id
+            referencedTableName: product_details
+            referencedColumnNames: product_id
+            constraintName: fk_review_product
+
+  - changeSet:
+      id: 12
+      author: ABZ
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: username
+                  type: VARCHAR(30)
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: password
+                  type: VARCHAR(30)
+              - column:
+                  name: status
+                  type: TINYINT
+
+  - changeSet:
+      id: 13
+      author: ABZ
+      changes:
+        - createTable:
+            tableName: roles
+            columns:
+              - column:
+                  name: username
+                  type: VARCHAR(30)
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: role
+                  type: VARCHAR(30)
+        - addForeignKeyConstraint:
+            baseTableName: roles
+            baseColumnNames: username
+            referencedTableName: users
+            referencedColumnNames: username
+
+            constraintName: fk_cart_roles_users
